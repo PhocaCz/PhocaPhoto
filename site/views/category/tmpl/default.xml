@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+<layout title="COM_PHOCAPHOTO_CATEGORY_LIST_LAYOUT">
+		<message>
+			<![CDATA[COM_PHOCAPHOTO_CATEGORY_LIST_LAYOUT_DESC]]>
+		</message>
+	</layout>
+		<name>COM_PHOCAPHOTO_CATEGORY_LIST_LAYOUT</name>
+		<description>COM_PHOCAPHOTO_CATEGORY_LIST_LAYOUT_DESC</description>
+		<fields name="request">
+		<fieldset name="request" addfieldpath="/administrator/components/com_phocaphoto/models/fields">
+
+			<field name="id" type="phocaphotocategory" section="com_phocaphoto" default="0" label="COM_PHOCAPHOTO_FIELD_SELECT_CATEGORY_LABEL" description="COM_PHOCAPHOTO_FIELD_SELECT_CATEGORY_DESC" required="true" />
+		</fieldset>
+	</fields>
+	
+	<fields name="params">
+<fieldset name="basic" addfieldpath="/administrator/components/com_phocaphoto/models/fields" >
+
+		<field name="show_pagination" type="radio"  class="btn-group btn-group-yesno" default="1" label="COM_PHOCAPHOTO_FIELD_SHOW_PAGINATION_LABEL" description="COM_PHOCAPHOTO_FIELD_SHOW_PAGINATION_DESC">
+				<option value="0">COM_PHOCAPHOTO_HIDE</option>
+				<option value="1">COM_PHOCAPHOTO_DISPLAY</option>
+			</field>
+			
+			<field name="show_pagination_limit"  class="btn-group btn-group-yesno" type="radio" default="1" label="COM_PHOCAPHOTO_FIELD_SHOW_PAGINATION_LIMIT_LABEL" description="COM_PHOCAPHOTO_FIELD_SHOW_PAGINATION_LIMIT_DESC">
+				<option value="0">COM_PHOCAPHOTO_HIDE</option>
+				<option value="1">COM_PHOCAPHOTO_DISPLAY</option>
+			</field>
+			
+			<field name="display_cat_name_title" type="list" default="1" label="COM_PHOCAPHOTO_FIELD_DISPLAY_CAT_NAME_IN_PAGE_TITLE_LABEL" description="COM_PHOCAPHOTO_FIELD_DISPLAY_CAT_NAME_IN_PAGE_TITLE_DESC">
+		<option value="0">COM_PHOCAPHOTO_HIDE</option>
+		<option value="1">COM_PHOCAPHOTO_DISPLAY</option>
+	</field>
+
+		</fieldset>
+</fields>
+</metadata>

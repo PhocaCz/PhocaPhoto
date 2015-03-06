@@ -1,0 +1,42 @@
+.ph-top {
+	margin-bottom: 5px;
+}
+.ph-desc,
+.ph-items,
+.ph-categories,
+.ph-subcategories {
+	margin-top: 10px;
+}
+
+.ph-cat-desc,
+.ph-item-desc {
+	
+}
+
+.pp-category-view,
+.pp-categories-view,
+.pp-item-view {
+	margin: 10px 0px;
+}
+
+.ph-image-full-box {
+	text-align: center;
+	margin: 0 auto;
+}
+.ph-image,
+.ph-image-full {
+	text-align: center;
+	margin: 0 auto;
+}
+.ph-social {
+	text-align: center;
+	margin: 0 auto;
+	margin-top: 10px;
+}
+.ph-image-navigation-box {
+	margin-top: 10px;
+}
+
+.ph-image-navigation {
+	width: 7em;
+}

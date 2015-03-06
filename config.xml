@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+<fields addfieldpath="/administrator/components/com_phocaphoto/models/fields">
+
+
+<fieldset name="categories" label="COM_PHOCAPHOTO_CONFIG_HEAD_CATEGORIES_VIEW_LABEL">
+
+<field name="description" default="" type="editor" label="COM_PHOCAPHOTO_FIELD_DESCRIPTION_LABEL" description="COM_PHOCAPHOTO_FIELD_DESCRIPTION_DESC" filter="safehtml" />
+
+<field name="display_subcat_cats_view" default="0"  type="text" label="COM_PHOCAPHOTO_FIELD_DISPLAY_SUBCAT_CATS_VIEW_LABEL" description="COM_PHOCAPHOTO_FIELD_DISPLAY_SUBCAT_CATS_VIEW_DESC" />
+
+<field name="columns_cats" type="list" class="btn-group btn-group-yesno" default="3" label="COM_PHOCAPHOTO_FIELD_NR_COLUMNS_CATEGORIES_LABEL" description="COM_PHOCAPHOTO_FIELD_NR_COLUMNS_CATEGORIES_DESC">
+	<option value="1">1</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+	<option value="6">6</option>
+	<option value="12">12</option>
+</field>
+
+<field name="image_width_cats" default="" type="text" label="COM_PHOCAPHOTO_FIELD_IMAGE_WIDTH_CATS_LABEL" description="COM_PHOCAPHOTO_FIELD_IMAGE_WIDTH_CATS_DESC" />
+
+<field name="image_height_cats" default="" type="text" label="COM_PHOCAPHOTO_FIELD_IMAGE_HEIGHT_CATS_LABEL" description="COM_PHOCAPHOTO_FIELD_IMAGE_HEIGHT_CATS_DESC" />
+
+</fieldset>
+
+<fieldset name="category" label="COM_PHOCAPHOTO_CONFIG_HEAD_CATEGORY_VIEW_LABEL">
+
+<field name="display_subcat_cat_view" default="5"  type="text" label="COM_PHOCAPHOTO_FIELD_DISPLAY_SUBCAT_CAT_VIEW_LABEL" description="COM_PHOCAPHOTO_FIELD_DISPLAY_SUBCAT_CAT_VIEW_DESC" />
+
+<field name="columns_cat" type="list" class="btn-group btn-group-yesno" default="3" label="COM_PHOCAPHOTO_FIELD_NR_COLUMNS_CATEGORY_LABEL" description="COM_PHOCAPHOTO_FIELD_NR_COLUMNS_CATEGORY_DESC">
+	<option value="1">1</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+	<option value="6">6</option>
+	<option value="12">12</option>
+</field>
+
+<field name="image_link" type="list" class="btn-group btn-group-yesno" default="0" label="COM_PHOCAPHOTO_FIELD_IMAGE_LINK_LABEL" description="COM_PHOCAPHOTO_FIELD_IMAGE_LINK_DESC">
+	<option value="0">COM_PHOCAPHOTO_NO_POPUP_SITE</option>
+	<option value="1">COM_PHOCAPHOTO_POPUP_WINDOW</option>
+</field>
+
+<field name="image_width" default="" type="text" label="COM_PHOCAPHOTO_FIELD_IMAGE_WIDTH_LABEL" description="COM_PHOCAPHOTO_FIELD_IMAGE_WIDTH_DESC" />
+
+<field name="image_height" default="" type="text" label="COM_PHOCAPHOTO_FIELD_IMAGE_HEIGHT_LABEL" description="COM_PHOCAPHOTO_FIELD_IMAGE_HEIGHT_DESC" />
+
+</fieldset>
+
+<fieldset name="image" label="COM_PHOCAPHOTO_CONFIG_HEAD_IMAGE_VIEW_LABEL">
+
+<field name="enable_image_navigation" default="0" type="radio" class="btn-group btn-group-yesno" label="COM_PHOCAPHOTO_FIELD_ENABLE_IMAGE_NAVIGATION_LABEL" description="COM_PHOCAPHOTO_FIELD_ENABLE_IMAGE_NAVIGATION_DESC" >
+<option value="0">COM_PHOCAPHOTO_NO</option>
+	<option value="1">COM_PHOCAPHOTO_YES</option>
+</field>
+
+</fieldset>
+
+<fieldset name="display" label="COM_PHOCAPHOTO_CONFIG_HEAD_GENERAL_SETTINGS_LABEL">
+
+<field name="photo_metadesc" type="textarea" label="COM_PHOCAPHOTO_FIELD_METADESC_LABEL" description="COM_PHOCAPHOTO_FIELD_METADESC_DESC" 
+rows="2" cols="26" default="" />
+<field name="photo_metakey" type="textarea" label="COM_PHOCAPHOTO_FIELD_METAKEY_LABEL" description="COM_PHOCAPHOTO_FIELD_METAKEY_DESC" rows="2" cols="26" default="" />	
+
+<field name="display_back" type="list" class="btn-group btn-group-yesno" default="3" label="COM_PHOCAPHOTO_FIELD_DISPLAY_BACK_BUTTON_LABEL" description="COM_PHOCAPHOTO_FIELD_DISPLAY_BACK_BUTTON_DESC">
+	<option value="0">COM_PHOCAPHOTO_NO</option>
+	<option value="1">COM_PHOCAPHOTO_CATEGORY_VIEW</option>
+	<option value="2">COM_PHOCAPHOTO_IMAGE_VIEW</option>
+	<option value="3">COM_PHOCAPHOTO_CATEGORY_IMAGE_VIEW</option>
+</field>
+
+<field name="enable_social" type="list" class="btn-group btn-group-yesno" default="0" label="COM_PHOCAPHOTO_FIELD_ENABLE_SOCIAL_BUTTONS_LABEL" description="COM_PHOCAPHOTO_FIELD_ENABLE_SOCIAL_BUTTONS_DESC">
+	<option value="0">COM_PHOCAPHOTO_NO</option>
+	<option value="1">COM_PHOCAPHOTO_YES</option>
+</field>
+
+<field name="equal_height" default="0" type="radio" class="btn-group btn-group-yesno" label="COM_PHOCAPHOTO_FIELD_THUMBNAIL_BOX_EQUAL_HEIGHT_LABEL" description="COM_PHOCAPHOTO_FIELD_THUMBNAIL_BOX_EQUAL_HEIGHT_DESC" >
+<option value="0">COM_PHOCAPHOTO_NO</option>
+	<option value="1">COM_PHOCAPHOTO_YES</option>
+</field>
+
+<field name="default_pagination" default="20" size="18" type="text" label="COM_PHOCAPHOTO_FIELD_DEFAULT_VALUE_PAGINATION_LABEL" description="COM_PHOCAPHOTO_FIELD_DEFAULT_VALUE_PAGINATION_DESC" />
+<field name="pagination" default="5,10,15,20,50" size="18" type="text" label="COM_PHOCAPHOTO_FIELD_CATEGORY_VIEW_PAGINATION_LABEL" description="COM_PHOCAPHOTO_FIELD_CATEGORY_VIEW_PAGINATION_DESC" />
+
+<field name="enable_cache" type="list" default="0" label="COM_PHOCAPHOTO_FIELD_ENABLE_CACHE_LABEL" description="COM_PHOCAPHOTO_FIELD_ENABLE_CACHE_DESC">
+	<option value="1">COM_PHOCAPHOTO_YES</option>
+	<option value="0">COM_PHOCAPHOTO_NO</option>
+</field>	
+
+
+<field name="load_boostrap" default="0" type="radio" class="btn-group btn-group-yesno" label="COM_PHOCAPHOTO_FIELD_LOAD_BOOTSTRAP_LABEL" description="COM_PHOCAPHOTO_FIELD_LOAD_BOOTSTRAP_DESC" >
+<option value="0">COM_PHOCAPHOTO_NO</option>
+	<option value="1">COM_PHOCAPHOTO_YES</option>
+</field>
+
+</fieldset>
+
+<fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
+	<field name="rules" type="rules" component="com_phocaphoto" filter="rules" label="COM_PHOCAPHOTO_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component" description="COM_PHOCAPHOTO_FIELD_JCONFIG_PERMISSIONS_DESC"/>
+</fieldset>
+	
+</fields>
+</config>

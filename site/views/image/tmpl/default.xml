@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+   <layout title="COM_PHOCAPHOTO_ITEM_LAYOUT">
+      <message>
+         <![CDATA[COM_PHOCAPHOTO_ITEM_LAYOUT_DESC]]>
+      </message>
+   </layout>
+
+   <name>COM_PHOCAPHOTO_ITEM_LAYOUT</name>
+   <description>COM_PHOCAPHOTO_ITEM_LAYOUT_DESC</description>
+   <fields name="request">
+      <fieldset name="request" addfieldpath="/administrator/components/com_phocaphoto/models/fields">
+
+         <field 
+            name="id" 
+            type="phocaphotoimage" 
+            section="com_phocaphoto" 
+            class="inputbox"
+            default="0" 
+            label="COM_PHOCAPHOTO_FIELD_SELECT_IMAGE_LABEL" 
+            description="COM_PHOCAPHOTO_FIELD_SELECT_IMAGE_DESC" 
+            required="true"
+         />
+      </fieldset>
+   </fields>
+  
+
+</metadata>
