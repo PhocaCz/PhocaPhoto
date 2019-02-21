@@ -28,13 +28,13 @@
 		"submenu": {
 			"0" : {
 				"image": "icon-16-ph-control-panel.png",
-				"view": "phocagallerycp",
+				"view": "phocaphotocp",
 				"link": "option=com_phocaphoto",
 				"title": "COM_PHOCAPHOTO_CONTROLPANEL"
 			},
-			"11": {
+			"1": {
 				"image": "icon-16-ph-menu-info.png",
-				"view": "phocagalleryin",
+				"view": "phocaphotoinfo",
 				"link": "option=com_phocaphoto&amp;view=phocaphotoinfo",
 				"title": "COM_PHOCAPHOTO_INFO"
 			}
