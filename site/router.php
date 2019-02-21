@@ -179,6 +179,8 @@ function PhocaPhotoParseRoute($segments)
 			break;
 		}
 	}
+	
+	unset($segments[0]);
 	return $vars;
 }
 ?>

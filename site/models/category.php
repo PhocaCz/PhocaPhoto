@@ -21,31 +21,32 @@ class PhocaPhotoModelCategory extends JModelLegacy
 	var $_total				= null;
 
 	function __construct() {
-		
+
 		$app	= JFactory::getApplication();
-		
+
 		parent::__construct();
-		
-		$config = JFactory::getConfig();		
-		
+
+		$config = JFactory::getConfig();
+
+
 		$paramsC 			= JComponentHelper::getParams('com_phocaphoto') ;
 		$defaultPagination	= $paramsC->get( 'default_pagination', '20' );
-		
+
 		// Get the pagination request variables
 		$this->setState('limit', $app->getUserStateFromRequest('com_phocaphoto.limit', 'limit', $defaultPagination, 'int'));
 		$this->setState('limitstart', $app->input->get('limitstart', 0, 'int'));
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
-		
+
 		$this->setState('filter.language',$app->getLanguageFilter());
 
 		// Get the filter request variables
-		$this->setState('filter_order', JRequest::getCmd('filter_order', 'ordering'));
-		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
-		
+		$this->setState('filter_order', $app->input->get('filter_order', 'ordering'));
+		$this->setState('filter_order_dir', $app->input->get('filter_order_Dir', 'ASC'));
+
 	}
-	
+
 	function getPagination($categoryId) {
 		if (empty($this->_pagination)) {
 			jimport('joomla.html.pagination');
@@ -53,7 +54,7 @@ class PhocaPhotoModelCategory extends JModelLegacy
 		}
 		return $this->_pagination;
 	}
-	
+
 	function getTotal($categoryId) {
 		if (empty($this->_total)) {
 			$query = $this->_getItemListQuery($categoryId);
@@ -63,63 +64,64 @@ class PhocaPhotoModelCategory extends JModelLegacy
 	}
 
 	function getItemList($categoryId) {
-		if (empty($this->_document)) {	
+		if (empty($this->_document)) {
 			$query			= $this->_getItemListQuery( $categoryId);
 			$this->_document= $this->_getList( $query ,$this->getState('limitstart'), $this->getState('limit'));
 		}
 		return $this->_document;
 	}
-	
-	function getCategory($categoryId) {	
-		if (empty($this->_category)) {			
+
+	function getCategory($categoryId) {
+		if (empty($this->_category)) {
 			$query					= $this->_getCategoriesQuery( $categoryId, FALSE );
 			$this->_category 		= $this->_getList( $query, 0, 1 );
 		}
 		return $this->_category;
 	}
-	
-	function getSubcategories($categoryId) {	
-		if (empty($this->_subcategories)) {			
+
+	function getSubcategories($categoryId) {
+		if (empty($this->_subcategories)) {
 			$query					= $this->_getCategoriesQuery( $categoryId, TRUE );
 			$this->_subcategories 	= $this->_getList( $query );
 		}
 		return $this->_subcategories;
 	}
-	
+
 	function _getItemListQuery( $categoryId) {
-	
+
 		$wheres		= array();
 		$app		= JFactory::getApplication();
 		$params 	= $app->getParams();
-		
+
 		if ((int)$categoryId > 0) {
 			$wheres[]			= " cc.id = ".(int)$categoryId;
 		}
 		$wheres[] = ' c.published = 1';
 		$wheres[] = ' cc.published = 1';
 		$wheres[] = ' c.approved = 1';
-		
+
 		if ($this->getState('filter.language')) {
 			$wheres[] =  ' c.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
-		
+
 		$fileOrdering = $this->_getItemOrdering();
-		
-		$query = ' SELECT c.id, c.title, c.filename, c.alias, c.description, c.catid, cc.id AS categoryid, cc.title AS categorytitle, cc.alias AS categoryalias'
+
+		$query = ' SELECT c.id, c.title, c.filename, c.alias, c.description, c.catid, c.extm, c.exts, c.extw, c.exth, c.extid, c.extl, c.exto,'
+				.' cc.id AS categoryid, cc.title AS categorytitle, cc.alias AS categoryalias'
 				.' FROM #__phocagallery AS c'
 				.' LEFT JOIN #__phocagallery_categories AS cc ON cc.id = c.catid'
-				. ' WHERE ' . implode( ' AND ', $wheres )
-				. ' ORDER BY c.'.$fileOrdering;		
+				.' WHERE ' . implode( ' AND ', $wheres )
+				.' ORDER BY c.'.$fileOrdering;
 		return $query;
 	}
-	
+
 	function _getCategoriesQuery( $categoryId, $subcategories = FALSE ) {
-		
+
 		$wheres		= array();
 		$app		= JFactory::getApplication();
 		$params 	= $app->getParams();
-		
+
 		// Get the current category or get parent categories of the current category
 		if ($subcategories) {
 			$wheres[]			= " cc.parent_id = ".(int)$categoryId;
@@ -129,11 +131,11 @@ class PhocaPhotoModelCategory extends JModelLegacy
 		}
 
 		$wheres[] = " cc.published = 1";
-		
+
 		if ($this->getState('filter.language')) {
 			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
-		
+
 		if ($subcategories) {
 			$query = " SELECT  cc.id, cc.title, cc.alias, COUNT(c.id) AS numdoc"
 				. " FROM #__phocagallery_categories AS cc"
@@ -148,11 +150,11 @@ class PhocaPhotoModelCategory extends JModelLegacy
 				. " WHERE " . implode( " AND ", $wheres )
 				. " ORDER BY cc.ordering";
 		}
-		
+
 		return $query;
 	}
-	
-	
+
+
 	function _getItemOrdering() {
 		if (empty($this->_item_ordering)) {
 			$app						= JFactory::getApplication();
@@ -163,7 +165,7 @@ class PhocaPhotoModelCategory extends JModelLegacy
 		}
 		return $this->_item_ordering;
 	}
-	
+
 	function _getCategoryOrdering() {
 		if (empty($this->_category_ordering)) {
 

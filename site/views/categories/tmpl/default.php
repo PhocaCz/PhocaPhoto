@@ -28,12 +28,38 @@ if (!empty($this->t['categories'])) {
 		echo '<div class="col-sm-6 col-md-'.$nw.'">';
 		echo '<div class="thumbnail ph-thumbnail">';
 		
-		$image 	= PhocaPhotoHelper::getThumbnailName($this->t['path'], $v->filename, 'medium');
+		$imagePath = '';
+		
+		// First try to user image set by category
+		if (isset($v->image_id) && (int)$v->image_id > 0) {
+			$sI = PhocaPhotoHelper::setFileNameByImageId((int)$v->image_id);
+			
+			if (isset($sI->filename) && ($sI->filename != '' && $sI->filename != '-')) {
+				$v->filename = $sI->filename;
+				
+			} else if (isset($sI->extm) && $sI->extm != '') {
+				$imagePath = $sI->extm;
+			
+			}
+		}
+	
+		// If not found, try to find internal image, if not found try to find external image
+		if ($imagePath == '') {
+			if (isset($v->filename) && ($v->filename != '' && $v->filename != '-')) {
+				$image 	= PhocaPhotoHelper::getThumbnailName($this->t['path'], $v->filename, 'medium');
+				if (isset($image->rel) && $image->rel != '') {
+					$imagePath = JURI::base(true).'/'.$image->rel;
+				}
+			} else if (isset($v->extm) && $v->extm != '') {
+				$imagePath = $v->extm;
+			}
+		}
+		
 		$link	= JRoute::_(PhocaPhotoRoute::getCategoryRoute($v->id, $v->alias));
 		
-		if (isset($image->rel) && $image->rel != '') {
+		if (isset($imagePath) && $imagePath != '') {
 			echo '<a href="'.$link.'">';
-			echo '<img class="img-responsive ph-image" src="'.JURI::base(true).'/'.$image->rel.'" alt=""';
+			echo '<img class="img-responsive ph-image" src="'.$imagePath.'" alt=""';
 			if (isset($this->t['image_width_cats']) && $this->t['image_width_cats'] != '' && isset($this->t['image_height_cats']) && $this->t['image_height_cats'] != '') {
 				echo ' style="width:'.$this->t['image_width_cats'].';height:'.$this->t['image_height_cats'].'"';
 			}

@@ -95,7 +95,7 @@ class PhocaPhotoModelCategories extends JModelLegacy
 		
 		$categoriesOrdering = $this->_getCategoryOrdering();
 		
-		$query =  " SELECT cc.id, cc.parent_id, cc.title, cc.alias, cc.image, cc.description, c.filename as filename, COUNT(c.id) AS numdoc, 0 AS numsubcat"
+		$query =  " SELECT cc.id, cc.parent_id, cc.title, cc.alias, cc.image, cc.description, cc.image_id, c.filename as filename, COUNT(c.id) AS numdoc, 0 AS numsubcat, c.extl, c.extm, c.exts, c.exto, c.exth, c.extw"
 				. " FROM #__phocagallery_categories AS cc"
 				. " LEFT JOIN #__phocagallery AS c ON c.catid = cc.id AND c.published = 1"
 				. " WHERE " . implode( " AND ", $wheres )

@@ -611,3 +611,8 @@ span.icon-32-approve {
 	margin: 0px 0px 0px 0px !important;
 	padding: 0px 0px 0px 0px !important;
 }
+
+.ph-cpanel-logo img {
+	transform: scale(0.6);
+	transform-origin: 0 50%;
+}

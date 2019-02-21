@@ -8,7 +8,7 @@
  */
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view');
-jimport( 'joomla.itemsystem.folder' ); 
+jimport( 'joomla.itemsystem.folder' );
 jimport( 'joomla.itemsystem.file' );
 
 class PhocaPhotoViewImage extends JViewLegacy
@@ -19,18 +19,18 @@ class PhocaPhotoViewImage extends JViewLegacy
 	protected $category;
 	protected $t;
 
-	function display($tpl = null){		
-		
+	function display($tpl = null){
+
 		$app					= JFactory::getApplication();
 		$this->t['p'] 			= $app->getParams();
-		$uri 					= JFactory::getURI();
+		$uri 					= \Joomla\CMS\Uri\Uri::getInstance();
 		$model					= $this->getModel();
 		$document				= JFactory::getDocument();
 		$itemId					= $app->input->get('id', 0, 'int');
 
 		$this->category			= $model->getCategory($itemId);
 		$this->item				= $model->getItem($itemId);
-		
+
 
 		$this->t['photo_metakey'] 			= $this->t['p']->get( 'photo_metakey', '' );
 		$this->t['photo_metadesc'] 			= $this->t['p']->get( 'photo_metadesc', '' );
@@ -42,8 +42,8 @@ class PhocaPhotoViewImage extends JViewLegacy
 		$this->t['display_back']			= $this->t['p']->get( 'display_back', 3 );
 		$this->t['enable_social']			= $this->t['p']->get( 'enable_social', 0 );
 		$this->t['enable_image_navigation']	= $this->t['p']->get( 'enable_image_navigation', 0 );
-		
-		
+
+
 		$this->itemnext[0]			= false;
 		$this->itemprev[0]			= false;
 		if ($this->t['enable_image_navigation'] == 1) {
@@ -52,35 +52,36 @@ class PhocaPhotoViewImage extends JViewLegacy
 				$this->itemprev			= $model->getItemPrev($this->item[0]->ordering, $this->item[0]->catid);
 			}
 		}
-		
+
 		JHTML::stylesheet('media/com_phocaphoto/css/style.css' );
-		
+
 		JHtml::_('jquery.framework', false);
 		if ($this->t['load_bootstrap'] == 1) {
+			JHtml::_('jquery.framework');
 			JHTML::stylesheet('media/com_phocaphoto/bootstrap/css/bootstrap.min.css' );
 			$document->addScript(JURI::root(true).'/media/com_phocaphoto/bootstrap/js/bootstrap.min.js');
 		}
-		
+
 		if (isset($this->category[0]) && is_object($this->category[0]) && isset($this->item[0]) && is_object($this->item[0])){
 			$this->_prepareDocument($this->category[0], $this->item[0]);
 		}
-		
+
 		$this->t['path'] = PhocaPhotoHelper::getPath();
 		parent::display($tpl);
-		
+
 	}
-	
+
 	protected function _prepareDocument($category, $item) {
-		
+
 		$app			= JFactory::getApplication();
 		$menus			= $app->getMenu();
 		$menu 			= $menus->getActive();
 		$pathway 		= $app->getPathway();
 		$title 			= null;
-		
+
 		$this->t['photo_metakey'] 		= $this->t['p']->get( 'photo_metakey', '' );
 		$this->t['photo_metadesc'] 		= $this->t['p']->get( 'photo_metadesc', '' );
-		
+
 		if ($menu) {
 			$this->t['p']->def('page_heading', $this->t['p']->get('page_title', $menu->title));
 		} else {
@@ -92,14 +93,14 @@ class PhocaPhotoViewImage extends JViewLegacy
 			$title = $this->item->title;
 		}
 		if (empty($title) || (isset($title) && $title == '')) {
-			$title = htmlspecialchars_decode($app->getCfg('sitename'));
-		} else if ($app->getCfg('sitename_pagetitles', 0)) {
-			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->getCfg('sitename')), $title);
+			$title = htmlspecialchars_decode($app->get('sitename'));
+		} else if ($app->get('sitename_pagetitles', 0)) {
+			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 		}
 		//$this->document->setTitle($title);
 
 		$this->document->setTitle($title);*/
-		
+
 		  // get page title
           $title = $this->t['p']->get('page_title', '');
           // if the page title is set append the item title (if set!)
@@ -108,25 +109,25 @@ class PhocaPhotoViewImage extends JViewLegacy
           }
           // if still is no title is set take the sitename only
           if (empty($title)) {
-             $title = $app->getCfg('sitename');
+             $title = $app->get('sitename');
           }
           // else add the title before or after the sitename
-          elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-             $title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+          elseif ($app->get('sitename_pagetitles', 0) == 1) {
+             $title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
           }
-          elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-             $title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+          elseif ($app->get('sitename_pagetitles', 0) == 2) {
+             $title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
           }
           $this->document->setTitle($title);
 
-		
+
 		if ($item->metadesc != '') {
 			$this->document->setDescription($item->metadesc);
 		} else if ($this->t['photo_metadesc'] != '') {
 			$this->document->setDescription($this->t['photo_metadesc']);
 		} else if ($this->t['p']->get('menu-meta_description', '')) {
 			$this->document->setDescription($this->t['p']->get('menu-meta_description', ''));
-		} 
+		}
 
 		if ($item->metakey != '') {
 			$this->document->setMetadata('keywords', $item->metakey);
@@ -136,10 +137,10 @@ class PhocaPhotoViewImage extends JViewLegacy
 			$this->document->setMetadata('keywords', $this->t['p']->get('menu-meta_keywords', ''));
 		}
 
-		if ($app->getCfg('MetaTitle') == '1' && $this->t['p']->get('menupage_title', '')) {
+		if ($app->get('MetaTitle') == '1' && $this->t['p']->get('menupage_title', '')) {
 			$this->document->setMetaData('title', $this->t['p']->get('page_title', ''));
 		}
-		
+
 		// Breadcrumbs TODO (Add the whole tree)
 		$pathway 		= $app->getPathway();
 		if (isset($category->id)) {
@@ -147,7 +148,7 @@ class PhocaPhotoViewImage extends JViewLegacy
 				$pathway->addItem($category->title, JRoute::_(PhocaPhotoRoute::getCategoryRoute($category->id, $category->alias)));
 			}
 		}
-		
+
 		if (!empty($item->title)) {
 			$pathway->addItem($item->title);
 		}

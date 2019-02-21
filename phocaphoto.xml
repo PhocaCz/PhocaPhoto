@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension method="upgrade" type="component" version="3">
+<extension type="component" method="upgrade" version="3">
 	<name>com_phocaphoto</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>30/08/2014</creationDate>
+	<creationDate>20/02/2019</creationDate>
 	<authorEmail></authorEmail>
-	<authorUrl>www.phoca.cz</authorUrl>
+	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>3.0.0</version>
-	<description>Phoca Photo</description>
-	<scriptfile>install/script.php</scriptfile>
+	<version>3.0.1</version>
+	<description>COM_PHOCAPHOTO_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
+	<projectName>PhocaPhoto</projectName>
 
 	<install>
 		<sql>
@@ -24,60 +25,69 @@
 	</uninstall>
 
 	<update>
-		<schemas/>
+		<schemas>
+			<schemapath type="mysql">update/sql/mysql</schemapath>
+		</schemas>
 	</update>
 
 	<files folder="site">
-		<filename>controller.php</filename>
-		<filename>index.html</filename>
-		<filename>phocaphoto.php</filename>
-		<filename>router.php</filename>
 		<folder>controllers</folder>
 		<folder>helpers</folder>
 		<folder>models</folder>
 		<folder>views</folder>
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>phocaphoto.php</filename>
+		<filename>router.php</filename>
 	</files>
 
 	<media destination="com_phocaphoto" folder="media">
-		<filename>index.html</filename>
 		<folder>bootstrap</folder>
 		<folder>css</folder>
 		<folder>images</folder>
 		<folder>js</folder>
+		<filename>index.html</filename>
 	</media>
 
-	<languages>
-		<language tag="en-GB" client="site">language/en-GB/en-GB.com_phocaphoto.ini</language>
-		<language tag="en-GB" client="site">language/en-GB/en-GB.com_phocaphoto.sys.ini</language>
+	<languages folder="admin/language">
+		<language tag="en-GB" client="site">en-GB/en-GB.com_phocaphoto.ini</language>
+		<language tag="en-GB" client="site">en-GB/en-GB.com_phocaphoto.sys.ini</language>
 	</languages>
 
 	<administration>
-		<menu img="" link="option=com_phocaphoto">COM_PHOCAPHOTO</menu>
-		<submenu>
-			<menu img="" alt="COM_PHOCAPHOTO_CONTROLPANEL" view="phocaphotocp" link="option=com_phocaphoto">COM_PHOCAPHOTO_CONTROLPANEL</menu>
-			<menu img="" alt="COM_PHOCAPHOTO_INFO" view="phocaphotoinfo" link="option=com_phocaphoto&amp;view=phocaphotoinfo">COM_PHOCAPHOTO_INFO</menu>
-		</submenu>
+
+		<menu img="media/com_phocaphoto/images/administrator/icon-16-ph-menu.png" alt="COM_PHOCAPHOTO" link="option=com_phocaphoto">COM_PHOCAPHOTO</menu>
+
+			<submenu>
+				<menu img="media/com_phocaphoto/images/administrator/icon-16-ph-control-panel.png" alt="COM_PHOCAPHOTO_CONTROLPANEL" view="phocagallerycp" link="option=com_phocaphoto">COM_PHOCAPHOTO_CONTROLPANEL</menu>
+				<menu img="media/com_phocaphoto/images/administrator/icon-16-ph-menu-info.png" alt="COM_PHOCAPHOTO_INFO" view="phocagalleryin" link="option=com_phocaphoto&amp;view=phocaphotoinfo">COM_PHOCAPHOTO_INFO</menu>
+			</submenu>
 
 		<files folder="admin">
-			<filename>access.xml</filename>
-			<filename>config.xml</filename>
-			<filename>controller.php</filename>
-			<filename>index.html</filename>
-			<filename>phocaphoto.php</filename>
-			<filename>phocaphoto.xml</filename>
 			<folder>controllers</folder>
 			<folder>help</folder>
 			<folder>helpers</folder>
 			<folder>install</folder>
 			<folder>models</folder>
 			<folder>tables</folder>
+			<folder>update</folder>
 			<folder>views</folder>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>phocaphoto.php</filename>
 		</files>
 
-		<languages>
-			<language tag="en-GB">language/en-GB/en-GB.com_phocaphoto.ini</language>
-			<language tag="en-GB">language/en-GB/en-GB.com_phocaphoto.sys.ini</language>
+		<languages folder="admin/language">
+			<language tag="en-GB">en-GB/en-GB.com_phocaphoto.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_phocaphoto.sys.ini</language>
 		</languages>
-
 	</administration>
+	
+	
+
+	<updateservers>
+		<server type="extension" name="COM_PHOCAPHOTO" priority="1"><![CDATA[https://raw.githubusercontent.com/PhocaCz/PhocaPhoto/master/manifest.xml]]></server>
+	</updateservers>
 </extension>

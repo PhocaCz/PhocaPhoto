@@ -1,0 +1,43 @@
+{
+	"author": "Jan Pavelka (www.phoca.cz)",
+	"authorUrl": "https://www.phoca.cz",
+	"copyright": "Jan Pavelka",
+	"license": "GNU/GPL",
+	"projectName": "PhocaPhoto",
+	"extensionName": "Phoca Photo",
+	"projectInitials" : "PH",				  
+	"description": "Phoca Photo is Joomla! CMS component - it displays images on Joomla! site. It includes categories view (list of categories), category view (list of images) and image (detail) view. Phoca Photo is lightweight version of Phoca Gallery. It doesn't include any administration (images and categories are managed by Phoca Gallery administration). It includes only lightweight frontend views which load the content fast and simply on the website.",
+	"projectUrl": "https://www.phoca.cz/phocaphoto",
+	"projectDocumentationUrl": "https://www.phoca.cz/documentation/category/114-phoca-photo-component",
+	"projectMainComponent": "Phoca Photo",
+	"projectMainComponentInfoUrl": "https://www.phoca.cz/project/phocaphoto-joomla-gallery",
+	"projectDemo" : {
+		"Joomla! 3 Demo - Photos": "https://www.phoca.cz/phocacartdemo/photos",
+		"Joomla! 3 Demo": "https://www.phoca.cz/joomla3demo/phoca-photo"
+	},
+	"projectColor": "#C92C75",												
+	"menu": {
+		"main":{
+			"0" : {
+				"image": "icon-16-ph-menu.png",
+				"view": "",
+				"link": "option=com_phocaphoto",
+				"title": "COM_PHOCAPHOTO"
+			}
+		},
+		"submenu": {
+			"0" : {
+				"image": "icon-16-ph-control-panel.png",
+				"view": "phocagallerycp",
+				"link": "option=com_phocaphoto",
+				"title": "COM_PHOCAPHOTO_CONTROLPANEL"
+			},
+			"11": {
+				"image": "icon-16-ph-menu-info.png",
+				"view": "phocagalleryin",
+				"link": "option=com_phocaphoto&amp;view=phocaphotoinfo",
+				"title": "COM_PHOCAPHOTO_INFO"
+			}
+		}
+	}
+}

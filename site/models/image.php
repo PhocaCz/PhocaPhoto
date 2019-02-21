@@ -20,55 +20,55 @@ class PhocaPhotoModelImage extends JModelLegacy
 	function __construct() {
 		$app	= JFactory::getApplication();
 		parent::__construct();
-		
+
 		$this->setState('filter.language',$app->getLanguageFilter());
 	}
 
 	function getItem( $itemId) {
-		if (empty($this->_item)) {			
+		if (empty($this->_item)) {
 			$query			= $this->_getitemQuery( $itemId );
 			$this->_item	= $this->_getList( $query, 0 , 1 );
 
 			if (empty($this->_item)) {
 				return null;
-			} 
+			}
 
 		}
 		return $this->_item;
 	}
-	
+
 	function getItemNext($ordering, $catid) {
-		if (empty($this->_itemnext)) {			
+		if (empty($this->_itemnext)) {
 			$query				= $this->_getItemQueryOrdering( $ordering, $catid, 2 );
 			$this->_itemnext	= $this->_getList( $query, 0 , 1 );
 
 			if (empty($this->_itemnext)) {
 				return null;
-			} 
+			}
 
 		}
 		return $this->_itemnext;
 	}
 	function getItemPrev($ordering, $catid) {
-		if (empty($this->_itemprev)) {			
+		if (empty($this->_itemprev)) {
 			$query				= $this->_getItemQueryOrdering( $ordering, $catid, 1 );
 			$this->_itemprev	= $this->_getList( $query, 0 , 1 );
 
 			if (empty($this->_itemprev)) {
 				return null;
-			} 
+			}
 
 		}
 		return $this->_itemprev;
 	}
-	
+
 	private function _getItemQueryOrdering($ordering, $catid, $direction) {
-		
+
 		$wheres[]	= " c.catid= ".(int) $catid;
 		//$wheres[]	= " c.catid= cc.id";
 		$wheres[] = " c.published = 1";
 		$wheres[] = " cc.published = 1";
-		
+
 		if ($direction == 1) {
 			$wheres[] = " c.ordering < " . (int) $ordering;
 			$order = 'DESC';
@@ -76,22 +76,23 @@ class PhocaPhotoModelImage extends JModelLegacy
 			$wheres[] = " c.ordering > " . (int) $ordering;
 			$order = 'ASC';
 		}
-		
+
 		if ($this->getState('filter.language')) {
 			$wheres[] =  ' c.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
-		
-		$query = ' SELECT c.id, c.title, c.alias, c.catid, cc.id AS categoryid, cc.title AS categorytitle, cc.alias AS categoryalias'
-				.' FROM #__phocagallery AS c' 
+
+		$query = ' SELECT c.id, c.title, c.alias, c.catid,'
+		        .' cc.id AS categoryid, cc.title AS categorytitle, cc.alias AS categoryalias'
+				.' FROM #__phocagallery AS c'
 				.' LEFT JOIN #__phocagallery_categories AS cc ON cc.id = c.catid'
 				.' WHERE ' . implode( ' AND ', $wheres )
-				.' ORDER BY c.ordering '.$order;		
+				.' ORDER BY c.ordering '.$order;
 		return $query;
-	
+
 	}
 	private function _getItemQuery( $itemId ) {
-		
+
 		//$app		= JFactory::getApplication();
 		//$params 	= $app->getParams();
 
@@ -100,53 +101,54 @@ class PhocaPhotoModelImage extends JModelLegacy
 		if (isset($category[0]->id)) {
 			$categoryId = $category[0]->id;
 		}
-		
+
 		$wheres[]	= " c.catid= ".(int) $categoryId;
 		$wheres[]	= " c.catid= cc.id";
 		$wheres[] 	= " c.published = 1";
 		$wheres[] 	= " cc.published = 1";
 		$wheres[] 	= " c.id = " . (int) $itemId;
-		
+
 		if ($this->getState('filter.language')) {
 			$wheres[] =  ' c.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
-		
-		$query = ' SELECT c.id, c.title, c.alias, c.catid, c.description, c.ordering, c.metadesc, c.metakey, c.filename, cc.id AS categoryid, cc.title AS categorytitle, cc.alias AS categoryalias'
-				.' FROM #__phocagallery AS c' 
+
+		$query = ' SELECT c.id, c.title, c.alias, c.catid, c.description, c.ordering, c.metadesc, c.metakey, c.filename, c.extm, c.exts, c.extw, c.exth, c.extid, c.extl, c.exto,'
+                .' cc.id AS categoryid, cc.title AS categorytitle, cc.alias AS categoryalias'
+				.' FROM #__phocagallery AS c'
 				.' LEFT JOIN #__phocagallery_categories AS cc ON cc.id = c.catid'
 				.' WHERE ' . implode( ' AND ', $wheres )
-				.' ORDER BY c.ordering';		
+				.' ORDER BY c.ordering';
 		return $query;
 	}
-	
+
 	function getCategory($itemId) {
-		if (empty($this->_category)) {			
+		if (empty($this->_category)) {
 			$query			= $this->_getCategoryQuery( $itemId );
 			$this->_category= $this->_getList( $query, 0, 1 );
 		}
 		return $this->_category;
 	}
-	
+
 	function _getCategoryQuery( $itemId ) {
-		
+
 		$wheres		= array();
 		//$app		= JFactory::getApplication();
 		//$params 	= $app->getParams();
 
 		$wheres[]	= " c.id= ".(int)$itemId;
 		$wheres[] = " cc.published = 1";
-		
+
 		if ($this->getState('filter.language')) {
 			$wheres[] =  ' c.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
-		
+
 		$query = " SELECT cc.id, cc.title, cc.alias, cc.description"
 				. " FROM #__phocagallery_categories AS cc"
 				. " LEFT JOIN #__phocagallery AS c ON c.catid = cc.id"
 				. " WHERE " . implode( " AND ", $wheres )
-				. " ORDER BY cc.ordering";		
+				. " ORDER BY cc.ordering";
 		return $query;
 	}
 }
