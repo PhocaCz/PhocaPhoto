@@ -21,6 +21,9 @@ class PhocaPhotoViewImage extends JViewLegacy
 
 	function display($tpl = null){
 
+		$lang = JFactory::getLanguage();
+		$lang->load('com_phocagallery');
+
 		$app					= JFactory::getApplication();
 		$this->t['p'] 			= $app->getParams();
 		$uri 					= \Joomla\CMS\Uri\Uri::getInstance();
@@ -43,6 +46,16 @@ class PhocaPhotoViewImage extends JViewLegacy
 		$this->t['enable_social']			= $this->t['p']->get( 'enable_social', 0 );
 		$this->t['enable_image_navigation']	= $this->t['p']->get( 'enable_image_navigation', 0 );
 
+		$this->t['display_icon_extlink1']	= $this->t['p']->get('display_icon_extlink1', 0);
+		$this->t['display_icon_extlink2']	= $this->t['p']->get('display_icon_extlink2', 0);
+		$this->t['extlink_class']			= $this->t['p']->get('extlink_class', '');
+		$this->t['extlink_class_image']		= $this->t['p']->get('extlink_class_image', '');
+		$this->t['extlink1_class_icon']		= $this->t['p']->get('extlink1_class_icon', '');
+		$this->t['extlink2_class_icon']		= $this->t['p']->get('extlink2_class_icon', '');
+		$this->t['view_photo_class_icon']	= $this->t['p']->get('view_photo_class_icon', '');
+
+		$this->t['display_title_image_view'] = $this->t['p']->get('display_title_image_view', 1);
+		$this->t['display_desc_image_view'] = $this->t['p']->get('display_desc_image_view', 0);
 
 		$this->itemnext[0]			= false;
 		$this->itemprev[0]			= false;

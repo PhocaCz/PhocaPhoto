@@ -145,7 +145,9 @@ if (!empty($this->items)) {
 		echo '</a>';
 
         if ($this->t['image_link'] == 1) {
-            echo '<figcaption itemprop="caption description">'. $v->title.'</figcaption>';
+			if ($this->t['display_title_category_view'] == 1) {
+            	echo '<figcaption itemprop="caption description">'. $v->title.'</figcaption>';
+			}
             echo '</figure>';
         }
 
@@ -157,30 +159,137 @@ if (!empty($this->items)) {
 			echo '<img src="'.$imageRel.'" alt="" style="width:'.$this->t['image_width'].'px;height:'.$this->t['image_height'].'px" >';
 		}*/
 		echo '<div class="caption">';
-		echo '<h3>'.$v->title.'</h3>';
+		if ($this->t['display_title_category_view'] == 1 && $v->title != '') {
+			echo '<h3>' . $v->title . '</h3>';
+		}
 
 		// Description box will be displayed even no description is set - to set height and have all columns same height
 		echo '<div class="ph-item-desc">';
-		if ($v->description != '') {
+		if ($this->t['display_desc_category_view'] == 1 && $v->description != '') {
 			echo $v->description;
 		}
 		echo '</div>';
 
+
+		// External Links
+		$class = '';
+		if ($this->t['extlink_class'] != '') {
+			$class = strip_tags($this->t['extlink_class']);
+		}
+		if ($this->t['extlink_class_category'] != '') {
+			$class .= ' '.strip_tags($this->t['extlink_class_category']);
+		}
+
+		$class = 'class="'.$class.'"';
+
+		// ICON EXTERNAL LINK 1
+		if ($this->t['display_icon_extlink1'] == 1 || $this->t['display_icon_extlink1'] == 3) {
+
+			$extlink1	= explode("|", $v->extlink1, 4);
+
+			if (isset($extlink1[0]) && $extlink1[0] != '' && isset($extlink1[1])) {
+				if (!isset($extlink1[2])) {
+					$extlink1[2] = '_self';
+				}
+				if (!isset($extlink1[3]) || $extlink1[3] == 1) {
+
+					$extlink1[4] = '<span class="glyphicon glyphicon glyphicon-share"></span>';
+					$extlink1[5] = '';
+				} else {
+					$extlink1[4] = $extlink1[1];
+					$extlink1[5] = '';
+				}
+
+				$pos10 		= strpos($extlink1[0], 'http://');
+				$pos20 		= strpos($extlink1[0], 'https://');
+				$extLinkUrl1	= 'http://'.$extlink1[0];
+				if ($pos10 === 0) {
+					$extLinkUrl1 = $extlink1[0];
+				} else if ($pos20 === 0) {
+					$extLinkUrl1 = $extlink1[0];
+				}
+
+				if ($this->t['extlink1_class_icon']	!= '') {
+					$extlink1[4] = '<span class="'.$this->t['extlink1_class_icon'].'"></span>';
+				}
+
+
+				echo ' <a '.$class.' title="'.$extlink1[1] .'"'
+					.' href="'. $extLinkUrl1 .'" target="'.$extlink1[2] .'" '.$extlink1[5].'>'
+					.$extlink1[4].'</a>';
+			}
+
+		}
+
+		// ICON EXTERNAL LINK 2
+		if ($this->t['display_icon_extlink2'] == 1 || $this->t['display_icon_extlink2'] == 3) {
+
+			$extlink2	= explode("|", $v->extlink2, 4);
+
+			if (isset($extlink2[0]) && $extlink2[0] != '' && isset($extlink2[1])) {
+				if (!isset($extlink2[2])) {
+					$extlink2[2] = '_self';
+				}
+				if (!isset($extlink2[3]) || $extlink2[3] == 1) {
+
+					$extlink2[4] = '<span class="glyphicon glyphicon glyphicon-share"></span>';
+					$extlink2[5] = '';
+				} else {
+					$extlink2[4] = $extlink2[1];
+					$extlink2[5] = '';
+				}
+
+				$pos11 		= strpos($extlink2[0], 'http://');
+				$pos21 		= strpos($extlink2[0], 'https://');
+				$extLinkUrl2	= 'http://'.$extlink2[0];
+				if ($pos11 === 0) {
+					$extLinkUrl2 = $extlink2[0];
+				} else if ($pos21 === 0) {
+					$extLinkUrl2 = $extlink2[0];
+				}
+
+				if ($this->t['extlink2_class_icon']	!= '') {
+					$extlink2[4] = '<span class="'.$this->t['extlink2_class_icon'].'"></span>';
+				}
+
+
+				echo ' <a '.$class.' title="'.$extlink2[1] .'"'
+					.' href="'. $extLinkUrl2 .'" target="'.$extlink2[2] .'" '.$extlink2[5].'>'
+					.$extlink2[4].'</a>';
+			}
+		}
+
+
+
 		// E.g. Photoswipe cannot run two instances at once, so it is better to hide the button for photo swipe
 		if ($this->t['display_view_photo_button'] == 1) {
+
+
+			if ($this->t['view_photo_class_icon']	!= '') {
+				$viewPhoto = '<span class="'.$this->t['view_photo_class_icon'].'"></span>';
+			} else {
+				$viewPhoto = JText::_('COM_PHOCAPHOTO_VIEW_PHOTO');
+			}
+
+			if ($this->t['view_photo_class'] != '') {
+				$class = $this->t['view_photo_class'];
+			} else {
+				$class = 'btn btn-primary';
+			}
+
 			echo '<p class="pull-right">';
 
 			if ($imageLink != '' && $this->t['image_link'] == 2) {
-				echo '<a href="' . $imageLink . '" rel="prettyPhoto[pp_gal2]" class="btn btn-primary" role="button">' . JText::_('COM_PHOCAPHOTO_VIEW_PHOTO') . '</a>';
+				echo '<a href="' . $imageLink . '" rel="prettyPhoto[pp_gal2]" class="'.$class.'" role="button">'.$viewPhoto.'</a>';
 			} else if ($imageLink != '' && $this->t['image_link'] == 1) {
 
 				/*echo '<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
 				echo '<a href="'.$imageLink.'" itemprop="contentUrl" class="btn btn-primary photoswipe-button" role="button" data-size="'.$w.'x'.$h.'" >'.JText::_('COM_PHOCAPHOTO_VIEW_PHOTO').'</a>';
 				echo '</figure>';*/
 				// Photoswipe cannot have too instances, so the second link goes to detail view
-				echo '<a href="' . $link . '" class="btn btn-primary" role="button">' . JText::_('COM_PHOCAPHOTO_VIEW_PHOTO') . '</a>';
+				echo '<a href="' . $link . '" class="'.$class.'" role="button">'.$viewPhoto.'</a>';
 			} else {
-				echo '<a href="' . $link . '" class="btn btn-primary" role="button">' . JText::_('COM_PHOCAPHOTO_VIEW_PHOTO') . '</a>';
+				echo '<a href="' . $link . '" class="'.$class.'" role="button">'.$viewPhoto.'</a>';
 			}
 			echo '</p>';
 		}

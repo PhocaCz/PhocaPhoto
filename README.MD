@@ -54,7 +54,7 @@ Phoca Photo is Joomla! CMS component - it displays images on Joomla! site. It in
 
 ## Version
 
-3.0.1
+3.0.2
 
 
 

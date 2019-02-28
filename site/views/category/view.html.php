@@ -20,6 +20,10 @@ class PhocaPhotoViewCategory extends JViewLegacy
 
 	function display($tpl = null) {
 
+
+		$lang = JFactory::getLanguage();
+		$lang->load('com_phocagallery');
+
 		$app					= JFactory::getApplication();
 		$this->t['p'] 			= $app->getParams();
 		$uri 					= \Joomla\CMS\Uri\Uri::getInstance();
@@ -57,7 +61,18 @@ class PhocaPhotoViewCategory extends JViewLegacy
 		$this->t['display_subcat_cat_view']	= $this->t['p']->get( 'display_subcat_cat_view', 5 );
 		$this->t['display_back']			= $this->t['p']->get( 'display_back', 3 );
 		$this->t['display_cat_name_title'] 	= $this->t['p']->get('display_cat_name_title', 0);
+		$this->t['display_icon_extlink1']	= $this->t['p']->get('display_icon_extlink1', 0);
+		$this->t['display_icon_extlink2']	= $this->t['p']->get('display_icon_extlink2', 0);
+		$this->t['extlink_class']			= $this->t['p']->get('extlink_class', '');
+		$this->t['extlink_class_category']	= $this->t['p']->get('extlink_class_category', '');
+		$this->t['extlink1_class_icon']		= $this->t['p']->get('extlink1_class_icon', '');
+		$this->t['extlink2_class_icon']		= $this->t['p']->get('extlink2_class_icon', '');
+		$this->t['view_photo_class_icon']	= $this->t['p']->get('view_photo_class_icon', '');
+		$this->t['view_photo_class']		= $this->t['p']->get('view_photo_class', 'btn btn-primary');
 		$this->t['display_view_photo_button'] 	= $this->t['p']->get('display_view_photo_button', 1);
+
+		$this->t['display_title_category_view'] = $this->t['p']->get('display_title_category_view', 1);
+		$this->t['display_desc_category_view'] 	= $this->t['p']->get('display_desc_category_view', 0);
 
 
 

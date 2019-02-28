@@ -105,14 +105,14 @@ class PhocaPhotoModelCategory extends JModelLegacy
 			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
-		$fileOrdering = $this->_getItemOrdering();
+		$imageOrdering = $this->_getItemOrdering();
 
-		$query = ' SELECT c.id, c.title, c.filename, c.alias, c.description, c.catid, c.extm, c.exts, c.extw, c.exth, c.extid, c.extl, c.exto,'
+		$query = ' SELECT c.id, c.title, c.filename, c.alias, c.description, c.catid, c.extm, c.exts, c.extw, c.exth, c.extid, c.extl, c.exto, c.extlink1, c.extlink2,'
 				.' cc.id AS categoryid, cc.title AS categorytitle, cc.alias AS categoryalias'
 				.' FROM #__phocagallery AS c'
 				.' LEFT JOIN #__phocagallery_categories AS cc ON cc.id = c.catid'
 				.' WHERE ' . implode( ' AND ', $wheres )
-				.' ORDER BY c.'.$fileOrdering;
+				.' ORDER BY c.'.$imageOrdering;
 		return $query;
 	}
 
@@ -125,7 +125,7 @@ class PhocaPhotoModelCategory extends JModelLegacy
 		// Get the current category or get parent categories of the current category
 		if ($subcategories) {
 			$wheres[]			= " cc.parent_id = ".(int)$categoryId;
-			$categoryOrdering 	= $this->_getCategoryOrdering();
+			$categoryOrdering 	= $this->_getSubcategoryOrdering();
 		} else {
 			$wheres[]	= " cc.id= ".(int)$categoryId;
 		}
@@ -166,12 +166,12 @@ class PhocaPhotoModelCategory extends JModelLegacy
 		return $this->_item_ordering;
 	}
 
-	function _getCategoryOrdering() {
+	function _getSubcategoryOrdering() {
 		if (empty($this->_category_ordering)) {
 
 			$app						= JFactory::getApplication();
 			$params						= $app->getParams();
-			$ordering					= $params->get( 'category_ordering', 1 );
+			$ordering					= $params->get( 'subcategory_ordering', 1 );
 			$this->_category_ordering 	= PhocaPhotoOrdering::getOrderingText($ordering);
 
 		}

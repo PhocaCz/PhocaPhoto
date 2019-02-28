@@ -15,6 +15,10 @@ class PhocaPhotoViewCategories extends JViewLegacy
 
 	function display($tpl = null)
 	{
+
+		$lang = JFactory::getLanguage();
+		$lang->load('com_phocagallery');
+
 		$app								= JFactory::getApplication();
 		$model								= $this->getModel();
 		$document							= JFactory::getDocument();

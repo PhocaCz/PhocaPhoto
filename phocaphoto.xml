@@ -2,12 +2,12 @@
 <extension type="component" method="upgrade" version="3">
 	<name>com_phocaphoto</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>21/02/2019</creationDate>
+	<creationDate>28/02/2019</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>3.0.1</version>
+	<version>3.0.2</version>
 	<description>COM_PHOCAPHOTO_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaPhoto</projectName>
@@ -59,8 +59,8 @@
 		<menu img="media/com_phocaphoto/images/administrator/icon-16-ph-menu.png" alt="COM_PHOCAPHOTO" link="option=com_phocaphoto">COM_PHOCAPHOTO</menu>
 
 			<submenu>
-				<menu img="media/com_phocaphoto/images/administrator/icon-16-ph-control-panel.png" alt="COM_PHOCAPHOTO_CONTROLPANEL" view="phocagallerycp" link="option=com_phocaphoto">COM_PHOCAPHOTO_CONTROLPANEL</menu>
-				<menu img="media/com_phocaphoto/images/administrator/icon-16-ph-menu-info.png" alt="COM_PHOCAPHOTO_INFO" view="phocagalleryin" link="option=com_phocaphoto&amp;view=phocaphotoinfo">COM_PHOCAPHOTO_INFO</menu>
+				<menu img="media/com_phocaphoto/images/administrator/icon-16-ph-control-panel.png" alt="COM_PHOCAPHOTO_CONTROLPANEL" view="phocaphotocp" link="option=com_phocaphoto">COM_PHOCAPHOTO_CONTROLPANEL</menu>
+				<menu img="media/com_phocaphoto/images/administrator/icon-16-ph-menu-info.png" alt="COM_PHOCAPHOTO_INFO" view="phocaphotoinfo" link="option=com_phocaphoto&amp;view=phocaphotoinfo">COM_PHOCAPHOTO_INFO</menu>
 			</submenu>
 
 		<files folder="admin">

@@ -4,10 +4,10 @@
 		<description><![CDATA[ Phoca Photo is Joomla! CMS component - it displays images on Joomla! site. It includes categories view (list of categories), category view (list of images) and image (detail) view. Phoca Photo is lightweight version of Phoca Gallery. It doesn't include any administration (images and categories are managed by Phoca Gallery administration). It includes only lightweight frontend views which load the content fast and simply on the website. ]]></description>
 		<element>com_phocaphoto</element>
 		<type>component</type>
-		<version>3.0.1</version>
-		<infourl title="Phoca Photo 3.0.1">http://www.phoca.cz/version/index.php?phocaphoto=3.0.1</infourl>
+		<version>3.0.2</version>
+		<infourl title="Phoca Photo 3.0.2">http://www.phoca.cz/version/index.php?phocaphoto=3.0.2</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaPhoto/releases/download/3.0.1/com_phocaphoto_v3.0.1.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaPhoto/releases/download/3.0.2/com_phocaphoto_v3.0.2.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>

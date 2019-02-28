@@ -113,7 +113,7 @@ class PhocaPhotoModelImage extends JModelLegacy
 			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
-		$query = ' SELECT c.id, c.title, c.alias, c.catid, c.description, c.ordering, c.metadesc, c.metakey, c.filename, c.extm, c.exts, c.extw, c.exth, c.extid, c.extl, c.exto,'
+		$query = ' SELECT c.id, c.title, c.alias, c.catid, c.description, c.ordering, c.metadesc, c.metakey, c.filename, c.extm, c.exts, c.extw, c.exth, c.extid, c.extl, c.exto, c.extlink1, c.extlink2,'
                 .' cc.id AS categoryid, cc.title AS categorytitle, cc.alias AS categoryalias'
 				.' FROM #__phocagallery AS c'
 				.' LEFT JOIN #__phocagallery_categories AS cc ON cc.id = c.catid'

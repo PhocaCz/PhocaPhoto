@@ -27,13 +27,17 @@ if (isset($this->category[0]->id) && ($this->t['display_back'] == 2 || $this->t[
 	}
 }
 
-if ( isset($this->item[0]->description) && $this->item[0]->description != '') {
+if ($this->t['display_title_image_view'] == 1 && isset($this->item[0]->title) && $this->item[0]->title != '') {
+	echo '<h3>' . $this->item[0]->title . '</h3>';
+}
+
+if ($this->t['display_desc_image_view'] == 1 && isset($this->item[0]->description) && $this->item[0]->description != '') {
 	echo '<div class="ph-desc">'. $this->item[0]->description. '</div>';
 }
 
 $v = $this->item[0];
 if (!empty($v)) {
-    
+
     $imagePath = '';
     if (isset($v->filename) && ($v->filename != '' && $v->filename != '-')) {
         $image 	= PhocaPhotoHelper::getThumbnailName($this->t['path'], $v->filename, 'large');
@@ -53,6 +57,96 @@ if (!empty($v)) {
 		echo ' />';
 	}
 	echo '</div>'. "\n";
+
+
+
+
+	// External Links
+	echo '<div class="ph-image-full-box-links">';
+	$class = '';
+	if ($this->t['extlink_class'] != '') {
+		$class = strip_tags($this->t['extlink_class']);
+	}
+	if ($this->t['extlink_class_image'] != '') {
+		$class .= ' '.strip_tags($this->t['extlink_class_image']);
+	}
+
+	$class = 'class="'.$class.'"';
+
+	// ICON EXTERNAL LINK 1
+		if ($this->t['display_icon_extlink1'] == 2 || $this->t['display_icon_extlink1'] == 3) {
+
+			$extlink1	= explode("|", $v->extlink1, 4);
+			if (isset($extlink1[0]) && $extlink1[0] != '' && isset($extlink1[1])) {
+				if (!isset($extlink1[2])) {
+					$extlink1[2] = '_self';
+				}
+				if (!isset($extlink1[3]) || $extlink1[3] == 1) {
+
+					$extlink1[4] = '<span class="glyphicon glyphicon glyphicon-share"></span>';
+					$extlink1[5] = '';
+				} else {
+					$extlink1[4] = $extlink1[1];
+					$extlink1[5] = '';
+				}
+
+				$pos10 		= strpos($extlink1[0], 'http://');
+				$pos20 		= strpos($extlink1[0], 'https://');
+				$extLinkUrl2	= 'http://'.$extlink1[0];
+				if ($pos10 === 0) {
+					$extLinkUrl2 = $extlink1[0];
+				} else if ($pos20 === 0) {
+					$extLinkUrl2 = $extlink1[0];
+				}
+
+				if ($this->t['extlink1_class_icon']	!= '') {
+					$extlink1[4] = '<span class="'.$this->t['extlink1_class_icon'].'"></span> ' . $extlink1[4];
+				}
+
+				echo ' <a '.$class.' title="'.$extlink1[1] .'"'
+					.' href="'. $extLinkUrl2 .'" target="'.$extlink1[2] .'" '.$extlink1[5].'>'
+					.$extlink1[4].'</a>';
+			}
+		}
+
+		// ICON EXTERNAL LINK 2
+		if ($this->t['display_icon_extlink2'] == 2 || $this->t['display_icon_extlink2'] == 3) {
+
+			$extlink2	= explode("|", $v->extlink2, 4);
+			if (isset($extlink2[0]) && $extlink2[0] != '' && isset($extlink2[1])) {
+				if (!isset($extlink2[2])) {
+					$extlink2[2] = '_self';
+				}
+				if (!isset($extlink2[3]) || $extlink2[3] == 1) {
+
+					$extlink2[4] = '<span class="glyphicon glyphicon glyphicon-share"></span>';
+					$extlink2[5] = '';
+				} else {
+					$extlink2[4] = $extlink2[1];
+					$extlink2[5] = '';
+				}
+
+				$pos11 		= strpos($extlink2[0], 'http://');
+				$pos21 		= strpos($extlink2[0], 'https://');
+				$extLinkUrl2	= 'http://'.$extlink2[0];
+				if ($pos11 === 0) {
+					$extLinkUrl2 = $extlink2[0];
+				} else if ($pos21 === 0) {
+					$extLinkUrl2 = $extlink2[0];
+				}
+
+				if ($this->t['extlink2_class_icon']	!= '') {
+					$extlink2[4] = '<span class="'.$this->t['extlink2_class_icon'].'"></span> '. $extlink2[4];
+				}
+
+				echo ' <a '.$class.' class="" title="'.$extlink2[1] .'"'
+					.' href="'. $extLinkUrl2 .'" target="'.$extlink2[2] .'" '.$extlink2[5].'>'
+					.$extlink2[4].'</a>';
+			}
+		}
+
+	echo '</div>';// end full box links
+	echo '<div class="clearfix"></div>';
 
 	$socO1 = '';
 	$socO2 = '';

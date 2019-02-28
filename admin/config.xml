@@ -22,6 +22,17 @@
 
 <field name="image_height_cats" default="" type="text" label="COM_PHOCAPHOTO_FIELD_IMAGE_HEIGHT_CATS_LABEL" description="COM_PHOCAPHOTO_FIELD_IMAGE_HEIGHT_CATS_DESC" />
 
+<field name="category_ordering" type="list" default="1" label="COM_PHOCAPHOTO_FIELD_CATEGORY_ORDERING_LABEL" description="COM_PHOCAPHOTO_FIELD_CATEGORY_ORDERING_DESC">
+	<option value="1">COM_PHOCAPHOTO_ORDERING_ASC</option>
+	<option value="2">COM_PHOCAPHOTO_ORDERING_DESC</option>
+	<option value="3">COM_PHOCAPHOTO_TITLE_ASC</option>
+	<option value="4">COM_PHOCAPHOTO_TITLE_DESC</option>
+	<option value="5">COM_PHOCAPHOTO_DATE_ASC</option>
+	<option value="6">COM_PHOCAPHOTO_DATE_DESC</option>
+	<option value="7">COM_PHOCAPHOTO_ID_ASC</option>
+	<option value="8">COM_PHOCAPHOTO_ID_DESC</option>
+</field>
+
 </fieldset>
 
 <fieldset name="category" label="COM_PHOCAPHOTO_CONFIG_HEAD_CATEGORY_VIEW_LABEL">
@@ -52,12 +63,57 @@
 	<option value="1">COM_PHOCAPHOTO_YES</option>
 </field>
 
+<field name="display_title_category_view" type="radio" class="btn-group btn-group-yesno" default="1" label="COM_PHOCAPHOTO_FIELD_DISPLAY_TITLE_CATEGORY_VIEW_LABEL" description="COM_PHOCAPHOTO_FIELD_DISPLAY_TITLE_CATEGORY_VIEW_DESC">
+	<option value="0">COM_PHOCAPHOTO_NO</option>
+	<option value="1">COM_PHOCAPHOTO_YES</option>
+</field>
+
+<field name="display_desc_category_view" type="radio" class="btn-group btn-group-yesno" default="0" label="COM_PHOCAPHOTO_FIELD_DISPLAY_DESCRIPTION_CATEGORY_VIEW_LABEL" description="COM_PHOCAPHOTO_FIELD_DISPLAY_DESCRIPTION_CATEGORY_VIEW_DESC">
+	<option value="0">COM_PHOCAPHOTO_NO</option>
+	<option value="1">COM_PHOCAPHOTO_YES</option>
+</field>
+
+
+
+
+<field name="subcategory_ordering" type="list" default="1" label="COM_PHOCAPHOTO_FIELD_SUBCATEGORY_ORDERING_LABEL" description="COM_PHOCAPHOTO_FIELD_SUBCATEGORY_ORDERING_DESC">
+	<option value="1">COM_PHOCAPHOTO_ORDERING_ASC</option>
+	<option value="2">COM_PHOCAPHOTO_ORDERING_DESC</option>
+	<option value="3">COM_PHOCAPHOTO_TITLE_ASC</option>
+	<option value="4">COM_PHOCAPHOTO_TITLE_DESC</option>
+	<option value="5">COM_PHOCAPHOTO_DATE_ASC</option>
+	<option value="6">COM_PHOCAPHOTO_DATE_DESC</option>
+	<option value="7">COM_PHOCAPHOTO_ID_ASC</option>
+	<option value="8">COM_PHOCAPHOTO_ID_DESC</option>
+</field>
+
+<field name="image_ordering" type="list" default="1" label="COM_PHOCAPHOTO_FIELD_IMAGE_ORDERING_LABEL" description="COM_PHOCAPHOTO_FIELD_IMAGE_ORDERING_DESC">
+	<option value="1">COM_PHOCAPHOTO_ORDERING_ASC</option>
+	<option value="2">COM_PHOCAPHOTO_ORDERING_DESC</option>
+	<option value="3">COM_PHOCAPHOTO_TITLE_ASC</option>
+	<option value="4">COM_PHOCAPHOTO_TITLE_DESC</option>
+	<option value="5">COM_PHOCAPHOTO_DATE_ASC</option>
+	<option value="6">COM_PHOCAPHOTO_DATE_DESC</option>
+	<option value="7">COM_PHOCAPHOTO_ID_ASC</option>
+	<option value="8">COM_PHOCAPHOTO_ID_DESC</option>
+</field>
+
 </fieldset>
 
 <fieldset name="image" label="COM_PHOCAPHOTO_CONFIG_HEAD_IMAGE_VIEW_LABEL">
 
 <field name="enable_image_navigation" default="0" type="radio" class="btn-group btn-group-yesno" label="COM_PHOCAPHOTO_FIELD_ENABLE_IMAGE_NAVIGATION_LABEL" description="COM_PHOCAPHOTO_FIELD_ENABLE_IMAGE_NAVIGATION_DESC" >
 <option value="0">COM_PHOCAPHOTO_NO</option>
+	<option value="1">COM_PHOCAPHOTO_YES</option>
+</field>
+
+<field name="display_title_image_view" type="radio" class="btn-group btn-group-yesno" default="1" label="COM_PHOCAPHOTO_FIELD_DISPLAY_TITLE_IMAGE_VIEW_LABEL" description="COM_PHOCAPHOTO_FIELD_DISPLAY_TITLE_IMAGE_VIEW_DESC">
+	<option value="0">COM_PHOCAPHOTO_NO</option>
+	<option value="1">COM_PHOCAPHOTO_YES</option>
+</field>
+
+<field name="display_desc_image_view" type="radio" class="btn-group btn-group-yesno" default="0" label="COM_PHOCAPHOTO_FIELD_DISPLAY_DESCRIPTION_IMAGE_VIEW_LABEL" description="COM_PHOCAPHOTO_FIELD_DISPLAY_DESCRIPTION_IMAGE_VIEW_DESC">
+	<option value="0">COM_PHOCAPHOTO_NO</option>
 	<option value="1">COM_PHOCAPHOTO_YES</option>
 </field>
 
@@ -75,6 +131,35 @@ rows="2" cols="26" default="" />
 	<option value="2">COM_PHOCAPHOTO_IMAGE_VIEW</option>
 	<option value="3">COM_PHOCAPHOTO_CATEGORY_IMAGE_VIEW</option>
 </field>
+
+<field name="display_icon_extlink1" type="list" class="btn-group btn-group-yesno" default="0" label="COM_PHOCAPHOTO_FIELD_DISPLAY_EXTERNAL_LINK_1_LABEL" description="COM_PHOCAPHOTO_FIELD_DISPLAY_EXTERNAL_LINK_1_DESC">
+	<option value="0">COM_PHOCAPHOTO_NO</option>
+	<option value="1">COM_PHOCAPHOTO_CATEGORY_VIEW</option>
+	<option value="2">COM_PHOCAPHOTO_IMAGE_VIEW</option>
+	<option value="3">COM_PHOCAPHOTO_CATEGORY_IMAGE_VIEW</option>
+</field>
+
+<field name="display_icon_extlink2" type="list" class="btn-group btn-group-yesno" default="0" label="COM_PHOCAPHOTO_FIELD_DISPLAY_EXTERNAL_LINK_2_LABEL" description="COM_PHOCAPHOTO_FIELD_DISPLAY_EXTERNAL_LINK_2_DESC">
+	<option value="0">COM_PHOCAPHOTO_NO</option>
+	<option value="1">COM_PHOCAPHOTO_CATEGORY_VIEW</option>
+	<option value="2">COM_PHOCAPHOTO_IMAGE_VIEW</option>
+	<option value="3">COM_PHOCAPHOTO_CATEGORY_IMAGE_VIEW</option>
+</field>
+
+<field name="extlink_class" default="" type="text" label="COM_PHOCAPHOTO_FIELD_EXTLINK_CLASS_LABEL" description="COM_PHOCAPHOTO_FIELD_EXTLINK_CLASS_DESC" />
+
+<field name="extlink_class_category" default="" type="text" label="COM_PHOCAPHOTO_FIELD_EXTLINK_CLASS_CATEGORY_VIEW_LABEL" description="COM_PHOCAPHOTO_FIELD_EXTLINK_CLASS_CATEGORY_VIEW_DESC" />
+
+<field name="extlink_class_image" default="" type="text" label="COM_PHOCAPHOTO_FIELD_EXTLINK_CLASS_IMAGE_VIEW_LABEL" description="COM_PHOCAPHOTO_FIELD_EXTLINK_CLASS_IMAGE_VIEW_DESC" />
+
+<field name="extlink1_class_icon" default="" type="text" label="COM_PHOCAPHOTO_FIELD_EXTLINK1_CLASS_ICON_LABEL" description="COM_PHOCAPHOTO_FIELD_EXTLINK1_CLASS_ICON_DESC" />
+
+<field name="extlink2_class_icon" default="" type="text" label="COM_PHOCAPHOTO_FIELD_EXTLINK2_CLASS_ICON_LABEL" description="COM_PHOCAPHOTO_FIELD_EXTLINK2_CLASS_ICON_DESC" />
+
+<field name="view_photo_class" default="btn btn-primary" type="text" label="COM_PHOCAPHOTO_FIELD_VIEW_PHOTO_CLASS_LABEL" description="COM_PHOCAPHOTO_FIELD_VIEW_PHOTO_CLASS_DESC" />
+
+<field name="view_photo_class_icon" default="" type="text" label="COM_PHOCAPHOTO_FIELD_VIEW_PHOTO_CLASS_ICON_LABEL" description="COM_PHOCAPHOTO_FIELD_VIEW_PHOTO_CLASS_ICON_DESC" />
+
 
 <field name="enable_social" type="radio" class="btn-group btn-group-yesno" default="0" label="COM_PHOCAPHOTO_FIELD_ENABLE_SOCIAL_BUTTONS_LABEL" description="COM_PHOCAPHOTO_FIELD_ENABLE_SOCIAL_BUTTONS_DESC">
 	<option value="0">COM_PHOCAPHOTO_NO</option>
