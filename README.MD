@@ -2,7 +2,7 @@
 
 
 
-![Phoca Photo](https://github.com/PhocaCz/PhocaPhoto/blob/master/phocaphoto.png)
+![Phoca Photo](https://github.com/PhocaCz/PhocaPhoto/blob/master/phocaphoto.png?raw=true)
 
 # Phoca Photo
 
@@ -23,6 +23,8 @@ Phoca Photo is Joomla! CMS component - it displays images on Joomla! site. It in
 ## Documentation
 
 [Documentation](https://www.phoca.cz/documentation/category/114-phoca-photo-component)
+
+
 
 
 
@@ -52,9 +54,13 @@ Phoca Photo is Joomla! CMS component - it displays images on Joomla! site. It in
 
 
 
-## Version
+## Version (Joomla! 3.x)
 
 3.0.2
+
+## Version (Joomla! 4.x)
+
+4.0.0Beta
 
 
 

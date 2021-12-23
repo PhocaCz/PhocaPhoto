@@ -7,13 +7,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 jimport('joomla.html.pagination');
-class PhocaPhotoPagination extends JPagination
+class PhocaPhotoPagination extends Pagination
 {
 	function getLimitBox() {
 
-		$app				= JFactory::getApplication();
-		$paramsC 			= JComponentHelper::getParams('com_phocaphoto') ;
+		$app				= Factory::getApplication();
+		$paramsC 			= ComponentHelper::getParams('com_phocaphoto') ;
 		$pagination 		= $paramsC->get( 'pagination', '5,10,15,20,50,100' );
 		$paginationArray	= explode( ',', $pagination );
 
@@ -21,17 +26,17 @@ class PhocaPhotoPagination extends JPagination
 		$limits = array ();
 
 		foreach ($paginationArray as $paginationValue) {
-			$limits[] = JHTML::_('select.option', $paginationValue);
+			$limits[] = HTMLHelper::_('select.option', $paginationValue);
 		}
-		$limits[] = JHTML::_('select.option', '0', JText::_('COM_PHOCAPHOTO_ALL'));
+		$limits[] = HTMLHelper::_('select.option', '0', Text::_('COM_PHOCAPHOTO_ALL'));
 
 		$selected = $this->viewall ? 0 : $this->limit;
 
 		// Build the select list
 		if ($app->isClient('administrator')) {
-			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" style="width: 5em;" onchange="submitform();"', 'value', 'text', $selected);
+			$html = HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="form-select" onchange="submitform();"', 'value', 'text', $selected);
 		} else {
-			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" style="width: 5em;" onchange="this.form.submit()"', 'value', 'text', $selected);
+			$html = HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="form-select" onchange="this.form.submit()"', 'value', 'text', $selected);
 		}
 		return $html;
 	}

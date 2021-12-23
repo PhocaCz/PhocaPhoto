@@ -7,18 +7,21 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (! class_exists('PhocaPhotoCategory')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocaphoto/helpers/phocaphoto.php');
 }
 
-class JFormFieldPhocaPhotoCategory extends JFormField
+class JFormFieldPhocaPhotoCategory extends FormField
 {
 	protected $type 		= 'PhocaPhotoCategory';
 
 	protected function getInput() {
 
-	    $app = JFactory::getApplication();
+	    $app = Factory::getApplication();
 		// Initialize variables.
 		$attr = '';
 
@@ -28,7 +31,7 @@ class JFormFieldPhocaPhotoCategory extends JFormField
 		$attr .= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : '';
 		$attr .= $this->multiple ? ' multiple="multiple"' : '';
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
        //build the list of categories
 		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
@@ -66,11 +69,11 @@ class JFormFieldPhocaPhotoCategory extends JFormField
 
 		//} else {
 
-			//array_unshift($tree, JHTML::_('select.option', '', '- '.JText::_('COM_PHOCAPHOTO_SELECT_CATEGORY').' -', 'value', 'text'));
+			//array_unshift($tree, JHtml::_('select.option', '', '- '.JText::_('COM_PHOCAPHOTO_SELECT_CATEGORY').' -', 'value', 'text'));
 		//}
-		//return JHTML::_('select.genericlist',  $tree,  $this->name, 'class="inputbox"', 'value', 'text', $this->value, $this->id );
+		//return JHtml::_('select.genericlist',  $tree,  $this->name, 'class="form-control"', 'value', 'text', $this->value, $this->id );
 
-		return JHtml::_('select.genericlist', $tree, $this->name,
+		return HTMLHelper::_('select.genericlist', $tree, $this->name,
 			array(
 				'list.attr' => $attr,
 				'list.select' => $this->value,

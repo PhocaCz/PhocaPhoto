@@ -7,16 +7,20 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 
 
-class JFormFieldPhocaPhotoImage extends JFormField
+class JFormFieldPhocaPhotoImage extends FormField
 {
 	protected $type 		= 'PhocaPhotoImage';
 
 	protected function getInput() {
 		
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		$wheres		= array();
 		
@@ -38,9 +42,9 @@ class JFormFieldPhocaPhotoImage extends JFormField
 		
 		$tree = array();
 
-		array_unshift($tree, JHTML::_('select.option', '', '- '.JText::_('COM_PHOCAPHOTO_SELECT_CATEGORY').' -', 'value', 'text'));
+		array_unshift($tree, HTMLHelper::_('select.option', '', '- '.Text::_('COM_PHOCAPHOTO_SELECT_CATEGORY').' -', 'value', 'text'));
 		
-		return JHTML::_('select.genericlist',  $data,  $this->name, 'class="inputbox"', 'value', 'text', $this->value, $this->id );
+		return HTMLHelper::_('select.genericlist',  $data,  $this->name, 'class="form-control"', 'value', 'text', $this->value, $this->id );
 	}
 }
 ?>

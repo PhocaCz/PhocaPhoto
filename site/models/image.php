@@ -7,9 +7,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.model');
 
-class PhocaPhotoModelImage extends JModelLegacy
+class PhocaPhotoModelImage extends BaseDatabaseModel
 {
 	var $_item 				= null;
 	var $_category 			= null;
@@ -18,7 +20,7 @@ class PhocaPhotoModelImage extends JModelLegacy
 	var $_itemprev			= null;
 
 	function __construct() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		parent::__construct();
 
 		$this->setState('filter.language',$app->getLanguageFilter());

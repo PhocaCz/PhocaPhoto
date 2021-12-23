@@ -7,12 +7,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
 
-if (!JFactory::getUser()->authorise('core.manage', 'com_phocaphoto')) {
-    throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 404);
+if (!Factory::getUser()->authorise('core.manage', 'com_phocaphoto')) {
+    throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 404);
     return false;
 }
 
+require JPATH_ADMINISTRATOR . '/components/com_phocaphoto/libraries/autoloadPhoca.php';
 require_once( JPATH_COMPONENT.'/controller.php' );
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
@@ -24,7 +28,7 @@ require_once( JPATH_COMPONENT.'/helpers/renderadminviews.php' );
 
 
 jimport('joomla.application.component.controller');
-$controller	= JControllerLegacy::getInstance('PhocaPhotoCp');
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$controller	= BaseController::getInstance('PhocaPhotoCp');
+$controller->execute(Factory::getApplication()->input->get('task'));
 $controller->redirect();
 ?>

@@ -7,9 +7,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.model');
 
-class PhocaPhotoModelCategories extends JModelLegacy
+class PhocaPhotoModelCategories extends BaseDatabaseModel
 {
 	var $_categories 			= null;
 	var $_most_viewed_docs 		= null;
@@ -17,7 +19,7 @@ class PhocaPhotoModelCategories extends JModelLegacy
 	var $_category_ordering		= null;
 
 	function __construct() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		parent::__construct();
 		
 		$this->setState('filter.language',$app->getLanguageFilter());
@@ -67,7 +69,7 @@ class PhocaPhotoModelCategories extends JModelLegacy
 	function _getCategoriesListQuery(  ) {
 		
 		$wheres		= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params 	= $app->getParams();
 		
 		$display_categories = $params->get('display_categories', '');
@@ -111,7 +113,7 @@ class PhocaPhotoModelCategories extends JModelLegacy
 	function _getCategoryListQuery( $parentCatId ) {
 		
 		$wheres		= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params 	= $app->getParams();
 
 		$display_categories = $params->get('display_categories', '');
@@ -155,7 +157,7 @@ class PhocaPhotoModelCategories extends JModelLegacy
 	function _getMostViewedDocsListQuery() {
 		
 		$wheres		= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params 	= $app->getParams();
 
 		$most_viewed_docs_num 	= $params->get( 'most_viewed_docs_num', 5 );
@@ -190,7 +192,7 @@ class PhocaPhotoModelCategories extends JModelLegacy
 	function _getCategoryOrdering() {
 		if (empty($this->_category_ordering)) {
 	
-			$app						= JFactory::getApplication();
+			$app						= Factory::getApplication();
 			$params 					= $app->getParams();
 			$ordering					= $params->get( 'category_ordering', 1 );
 			$this->_category_ordering 	= PhocaPhotoOrdering::getOrderingText($ordering);

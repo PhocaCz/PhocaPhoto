@@ -7,6 +7,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
 jimport('joomla.application.component.model');
 
 class PhocaPhotoHelper
@@ -50,33 +54,33 @@ class PhocaPhotoHelper
 		switch ($size) {
 			case 'large':
 			$fileNameThumb 	= 'phoca_thumb_l_'. $title;
-			$thumbName->abs	= JPath::clean(str_replace($title, 'thumbs/' . $fileNameThumb, $path->image_abs . $filename));
+			$thumbName->abs	= Path::clean(str_replace($title, 'thumbs/' . $fileNameThumb, $path->image_abs . $filename));
 			$thumbName->rel	= str_replace ($title, 'thumbs/' . $fileNameThumb, $path->image_rel . $filename);
 			break;
 
 			case 'medium':
 			$fileNameThumb 	= 'phoca_thumb_m_'. $title;
-			$thumbName->abs	= JPath::clean(str_replace($title, 'thumbs/' . $fileNameThumb, $path->image_abs . $filename));
+			$thumbName->abs	= Path::clean(str_replace($title, 'thumbs/' . $fileNameThumb, $path->image_abs . $filename));
 			$thumbName->rel	= str_replace ($title, 'thumbs/' . $fileNameThumb, $path->image_rel . $filename);
 			break;
 
 			default:
 			case 'small':
 			$fileNameThumb 	= 'phoca_thumb_s_'. $title;
-			$thumbName->abs	= JPath::clean(str_replace($title, 'thumbs/' . $fileNameThumb, $path->image_abs . $filename));
+			$thumbName->abs	= Path::clean(str_replace($title, 'thumbs/' . $fileNameThumb, $path->image_abs . $filename));
 			$thumbName->rel	= str_replace ($title, 'thumbs/' . $fileNameThumb, $path->image_rel . $filename);
 			break;
 		}
 		return $thumbName;
 	}
 
-	public static function CategoryTreeOption($data, $tree, $id=0, $text='', $currentId) {
+	public static function CategoryTreeOption($data, $tree, $id=0, $text='', $currentId = 0) {
 
 		foreach ($data as $key) {
 			$show_text =  $text . $key->text;
 
 			if ($key->parentid == $id && $currentId != $id && $currentId != $key->value) {
-				$tree[$key->value] 			= new JObject();
+				$tree[$key->value] 			= new CMSObject();
 				$tree[$key->value]->text 	= $show_text;
 				$tree[$key->value]->value 	= $key->value;
 				$tree = PhocaPhotoHelper::CategoryTreeOption($data, $tree, $key->value, $show_text . " - ", $currentId );
@@ -89,7 +93,7 @@ class PhocaPhotoHelper
 	{
 
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
        //build the list of categories
 		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
@@ -101,7 +105,7 @@ class PhocaPhotoHelper
 
 		$catId	= -1;
 
-		$javascript 	= 'class="inputbox" size="1" onchange="submitform( );"';
+		$javascript 	= 'class="form-control" size="1" onchange="submitform( );"';
 
 		$tree = array();
 		$text = '';
@@ -113,20 +117,20 @@ class PhocaPhotoHelper
 
 	public static function getFooter() {
 
-		JPluginHelper::importPlugin('phocatools');
-		$results = \JFactory::getApplication()->triggerEvent('PhocatoolsOnDisplayInfo', array('NjI5NTY4NTcxMTc='));
+		PluginHelper::importPlugin('phocatools');
+		$results = Factory::getApplication()->triggerEvent('onPhocatoolsOnDisplayInfo', array('NjI5NTY4NTcxMTc='));
 		if (isset($results[0]) && $results[0] === true) {
 			return '';
 		}
 
 		echo '<div style="text-align: right;margin:10px auto;">Powered by <a href="https://www.phoca.cz/phocaphoto" target="_blank" title="Phoca Photo">Phoca Photo</a></div>';
 	}
-	
+
 	public static function setFileNameByImageId($id = 0) {
 
 		$f = '';
 		if ((int)$id > 0) {
-			$db 	= JFactory::getDBO();
+			$db 	= Factory::getDBO();
 			$query = ' SELECT a.filename, a.extid, a.exts, a.extm, a.extw, a.exth'
 					.' FROM #__phocagallery AS a'
 					.' WHERE a.id = '.(int)$id

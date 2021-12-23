@@ -7,21 +7,26 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.view');
 
-class PhocaPhotoViewCategories extends JViewLegacy
+class PhocaPhotoViewCategories extends HtmlView
 {
 	protected $t;
 
 	function display($tpl = null)
 	{
 
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_phocagallery');
 
-		$app								= JFactory::getApplication();
+		$app								= Factory::getApplication();
 		$model								= $this->getModel();
-		$document							= JFactory::getDocument();
+		$document							= Factory::getDocument();
 		$this->t['p'] 						= $app->getParams();
 		$this->t['categories']				= $model->getCategoriesList();
 		//$this->t['mostvieweddocs']			= $model->getMostViewedDocsList($this->t['p']);
@@ -37,22 +42,22 @@ class PhocaPhotoViewCategories extends JViewLegacy
 		$this->t['display_subcat_cats_view']= $this->t['p']->get( 'display_subcat_cats_view', 0 );
 
 
-		JHTML::stylesheet('media/com_phocaphoto/css/style.css' );
-		if ($this->t['load_bootstrap'] == 1) {
-			JHtml::_('jquery.framework');
-			JHTML::stylesheet('media/com_phocaphoto/bootstrap/css/bootstrap.min.css' );
-			$document->addScript(JURI::root(true).'/media/com_phocaphoto/bootstrap/js/bootstrap.min.js');
+		HTMLHelper::stylesheet('media/com_phocaphoto/css/style.css' );
+	/*	if ($this->t['load_bootstrap'] == 1) {
+			HTMLHelper::_('jquery.framework');
+			HTMLHelper::stylesheet('media/com_phocaphoto/bootstrap/css/bootstrap.min.css' );
+			$document->addScript(Uri::root(true).'/media/com_phocaphoto/bootstrap/js/bootstrap.min.js');
 		}
 
 		if ($this->t['equal_height'] == 1) {
-			JHtml::_('jquery.framework', false);
-			$document->addScript(JURI::root(true).'/media/com_phocaphoto/js/jquery.equalheights.min.js');
+			HTMLHelper::_('jquery.framework', false);
+			$document->addScript(Uri::root(true).'/media/com_phocaphoto/js/jquery.equalheights.min.js');
 
 			$document->addScriptDeclaration(
 			'jQuery(document).ready(function(){
 				jQuery(\'.ph-thumbnail\').equalHeights();
 			});');
-		}
+		}*/
 
 		$this->t['path'] = PhocaPhotoHelper::getPath();
 
@@ -63,7 +68,7 @@ class PhocaPhotoViewCategories extends JViewLegacy
 
 	protected function _prepareDocument() {
 
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$menus		= $app->getMenu();
 		$menu 		= $menus->getActive();
 		$pathway 	= $app->getPathway();
@@ -75,14 +80,14 @@ class PhocaPhotoViewCategories extends JViewLegacy
 		if ($menu) {
 			$this->t['p']->def('page_heading', $this->t['p']->get('page_title', $menu->title));
 		} else {
-			$this->t['p']->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->t['p']->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 		}
 /*
 		$title = $this->t['p']->get('page_heading', '');
 		if (empty($title)) {
 			$title = htmlspecialchars_decode($app->get('sitename'));
 		} else if ($app->get('sitename_pagetitles', 0)) {
-			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
+			$title = Text::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 		}
 		//$this->document->setTitle($title);
 
@@ -99,10 +104,10 @@ class PhocaPhotoViewCategories extends JViewLegacy
           }
           // else add the title before or after the sitename
           elseif ($app->get('sitename_pagetitles', 0) == 1) {
-             $title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+             $title = Text::sprintf('JPAGETITLE', $app->get('sitename'), $title);
           }
           elseif ($app->get('sitename_pagetitles', 0) == 2) {
-             $title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+             $title = Text::sprintf('JPAGETITLE', $title, $app->get('sitename'));
           }
           $this->document->setTitle($title);
 

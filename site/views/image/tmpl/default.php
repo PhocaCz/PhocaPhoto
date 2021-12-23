@@ -7,14 +7,17 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
-echo '<div id="ph-pp-item-box" class="pp-item-view'.$this->t['p']->get( 'pageclass_sfx' ).'">';
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+echo '<div id="ph-ph-item-box" class="ph-item-view'.$this->t['p']->get( 'pageclass_sfx' ).'">';
 if ( $this->t['p']->get( 'show_page_heading' ) ) {
 	echo '<div class="page-header"><h1><h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1></div>';
 }
 
 if (isset($this->category[0]->id) && ($this->t['display_back'] == 2 || $this->t['display_back'] == 3)) {
 	if ($this->category[0]->id > 0) {
-		$linkUp = JRoute::_(PhocaPhotoRoute::getCategoryRoute($this->category[0]->id, $this->category[0]->alias));
+		$linkUp = Route::_(PhocaPhotoRoute::getCategoryRoute($this->category[0]->id, $this->category[0]->alias));
 		$linkUpText = $this->category[0]->title;
 	} else {
 		$linkUp 	= false;
@@ -23,7 +26,7 @@ if (isset($this->category[0]->id) && ($this->t['display_back'] == 2 || $this->t[
 
 	if ($linkUp && $linkUpText) {
 		echo '<div class="ph-top">'
-		.'<a class="btn btn-success" title="'.$linkUpText.'" href="'. $linkUp.'" ><span class="glyphicon glyphicon-arrow-left"></span> '.JText::_($linkUpText).'</a></div>';
+		.'<a class="btn btn-success" title="'.$linkUpText.'" href="'. $linkUp.'" ><span class="glyphicon glyphicon-arrow-left fas fa-arrow-left"></span> '.Text::_($linkUpText).'</a></div>';
 	}
 }
 
@@ -42,7 +45,7 @@ if (!empty($v)) {
     if (isset($v->filename) && ($v->filename != '' && $v->filename != '-')) {
         $image 	= PhocaPhotoHelper::getThumbnailName($this->t['path'], $v->filename, 'large');
         if (isset($image->rel) && $image->rel != '') {
-            $imagePath = JURI::base(true).'/'.$image->rel;
+            $imagePath = Uri::base(true).'/'.$image->rel;
         }
     } else if (isset($v->extl) && $v->extl != '') {
         $imagePath = $v->extl;
@@ -83,7 +86,7 @@ if (!empty($v)) {
 				}
 				if (!isset($extlink1[3]) || $extlink1[3] == 1) {
 
-					$extlink1[4] = '<span class="glyphicon glyphicon glyphicon-share"></span>';
+					$extlink1[4] = '<span class="glyphicon glyphicon glyphicon-share fas-fa-share"></span>';
 					$extlink1[5] = '';
 				} else {
 					$extlink1[4] = $extlink1[1];
@@ -119,7 +122,7 @@ if (!empty($v)) {
 				}
 				if (!isset($extlink2[3]) || $extlink2[3] == 1) {
 
-					$extlink2[4] = '<span class="glyphicon glyphicon glyphicon-share"></span>';
+					$extlink2[4] = '<span class="glyphicon glyphicon glyphicon-share fas fa-share"></span>';
 					$extlink2[5] = '';
 				} else {
 					$extlink2[4] = $extlink2[1];
@@ -153,7 +156,7 @@ if (!empty($v)) {
 
 	if ($this->t['enable_social'] == 1) {
 
-		$uri = JUri::getInstance();
+		$uri = Uri::getInstance();
 		$uri = PhocaPhotoUtils::encodeURIComponent($uri);
 		$socO1 = '<div class="pp_social ph-social"><div class="twitter"><a href="https://twitter.com/share" class="twitter-share-button" data-count="none">Tweet</a><script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script></div></div>';
 
@@ -161,40 +164,40 @@ if (!empty($v)) {
 
 	}
 
-	if ($this->itemnext[0] || $this->itemprev[0]) {
-		echo '<div class="row"><div class="col-sm-4 col-md-4 ph-image-navigation-box">';
-		if($this->itemprev[0]) {
+	if ((isset($this->itemnext[0]) && $this->itemnext[0]) || (isset($this->itemprev[0]) && $this->itemprev[0])) {
+		echo '<div class="row"><div class="col-sm-4 col-md-4 ph-ph-image-navigation-box">';
+		if(isset($this->itemprev[0]) && $this->itemprev[0]) {
 			$p = $this->itemprev[0];
-			$linkPrev = JRoute::_(PhocaPhotoRoute::getImageRoute($p->id, $p->catid, $p->alias, $p->categoryalias));
-			echo '<div class="pull-left"><a href="'.$linkPrev.'" class="btn btn-default ph-image-navigation" role="button"><span class="glyphicon glyphicon-arrow-left"></span> '.JText::_('COM_PHOCAPHOTO_PREVIOUS').'</a></div>';
+			$linkPrev = Route::_(PhocaPhotoRoute::getImageRoute($p->id, $p->catid, $p->alias, $p->categoryalias));
+			echo '<div class="pull-left"><a href="'.$linkPrev.'" class="btn btn-default ph-image-navigation" role="button"><span class="glyphicon glyphicon-arrow-left fas fa-arrow-left"></span> '.Text::_('COM_PHOCAPHOTO_PREVIOUS').'</a></div>';
 		}
 		echo '</div>';
 
-		echo '<div class="col-sm-2 col-md-2 ph-image-navigation-box">';
+		echo '<div class="col-sm-2 col-md-2 ph-ph-image-navigation-box">';
 		echo $socO1;
 		echo '</div>';
 
-		echo '<div class="col-sm-2 col-md-2 ph-image-navigation-box">';
+		echo '<div class="col-sm-2 col-md-2 ph-ph-image-navigation-box">';
 		echo $socO2;
 		echo '</div>';
 
-		echo '<div class="col-sm-4 col-md-4 ph-image-navigation-box">';
-		if($this->itemnext[0]) {
+		echo '<div class="col-sm-4 col-md-4 ph-ph-image-navigation-box">';
+		if(isset($this->itemnext[0]) && $this->itemnext[0]) {
 			$n = $this->itemnext[0];
-			$linkNext = JRoute::_(PhocaPhotoRoute::getImageRoute($n->id, $n->catid, $n->alias, $n->categoryalias));
-			echo '<div class="pull-right"><a href="'.$linkNext.'" class="btn btn-default ph-image-navigation" role="button">'.JText::_('COM_PHOCAPHOTO_NEXT').' <span class="glyphicon glyphicon-arrow-right"></span></a></div>';
+			$linkNext = Route::_(PhocaPhotoRoute::getImageRoute($n->id, $n->catid, $n->alias, $n->categoryalias));
+			echo '<div class="pull-right"><a href="'.$linkNext.'" class="btn btn-default ph-image-navigation" role="button">'.Text::_('COM_PHOCAPHOTO_NEXT').' <span class="glyphicon glyphicon-arrow-right fas fa-arrow-right"></span></a></div>';
 		}
 		echo '</div></div>';
 	} else {
-		echo '<div class="col-sm-4 col-md-4 ph-image-navigation-box"></div>';
-		echo '<div class="col-sm-2 col-md-2 ph-image-navigation-box">';
+		echo '<div class="col-sm-4 col-md-4 ph-ph-image-navigation-box"></div>';
+		echo '<div class="col-sm-2 col-md-2 ph-ph-image-navigation-box">';
 		echo $socO1;
 		echo '</div>';
 
-		echo '<div class="col-sm-2 col-md-2 ph-image-navigation-box">';
+		echo '<div class="col-sm-2 col-md-2 ph-ph-image-navigation-box">';
 		echo $socO2;
 		echo '</div>';
-		echo '<div class="col-sm-4 col-md-4 ph-image-navigation-box"></div>';
+		echo '<div class="col-sm-4 col-md-4 ph-ph-image-navigation-box"></div>';
 	}
 
 

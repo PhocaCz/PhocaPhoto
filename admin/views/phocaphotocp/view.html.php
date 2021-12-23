@@ -7,26 +7,31 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
 jimport( 'joomla.application.component.view' );
-jimport( 'joomla.html.pane' );
 
-class PhocaPhotoCpViewPhocaPhotoCp extends JViewLegacy
+class PhocaPhotoCpViewPhocaPhotoCp extends HtmlView
 {
 	protected $t;
 	protected $views;
 
 	function display($tpl = null) {
 
-		$this->t	= PhocaPhotoUtils::setVars();
+		$this->t	= PhocaPhotoUtils::setVars('cp');
+		$this->r	= new PhocaPhotoRenderAdminview();
+
+		$i = ' icon-';
+		$d = 'duotone ';
 		$this->views= array(
-		'phocagallery'		=> $this->t['l'] . '_PHOCA_GALLERY',
-		'info'		=> $this->t['l'] . '_INFO'
+		'phocagallery'		=> array($this->t['l'] . '_PHOCA_GALLERY', $d.$i.'pictures', '#95313e'),
+		'info'				=> array($this->t['l'] . '_INFO', $d.$i.'info-circle', '#3378cc')
 		);
 
-		JHTML::stylesheet( $this->t['s'] );
-		JHTML::_('behavior.tooltip');
-		$class	= $this->t['n'] . 'Utils';
-		$this->t['version'] = $class::getExtensionVersion();
+		$this->t['version'] = PhocaPhotoUtils::getExtensionVersion();
 		$this->addToolbar();
 		parent::display($tpl);
 	}
@@ -35,18 +40,18 @@ class PhocaPhotoCpViewPhocaPhotoCp extends JViewLegacy
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['c'].'cp.php';
 		$class	= $this->t['n'] . 'CpHelper';
 		$canDo	= $class::getActions($this->t['c']);
-		JToolbarHelper::title( JText::_( $this->t['l'].'_PH_CONTROL_PANEL' ), 'home-2 cpanel' );
+		ToolbarHelper::title( Text::_( $this->t['l'].'_PH_CONTROL_PANEL' ), 'home-2 cpanel' );
 
 		// This button is unnecessary but it is displayed because Joomla! design bug
-		$bar = JToolbar::getInstance( 'toolbar' );
-		$dhtml = '<a href="index.php?option=com_phocaphoto" class="btn btn-small"><i class="icon-home-2" title="'.JText::_($this->t['l'].'_CONTROL_PANEL').'"></i> '.JText::_($this->t['l'].'_CONTROL_PANEL').'</a>';
+		$bar = Toolbar::getInstance( 'toolbar' );
+		$dhtml = '<a href="index.php?option=com_phocaphoto" class="btn btn-small"><i class="icon-home-2" title="'.Text::_($this->t['l'].'_CONTROL_PANEL').'"></i> '.Text::_($this->t['l'].'_CONTROL_PANEL').'</a>';
 		$bar->appendButton('Custom', $dhtml);
 
 		if ($canDo->get('core.admin')) {
-			JToolbarHelper::preferences($this->t['o']);
-			JToolbarHelper::divider();
+			ToolbarHelper::preferences($this->t['o']);
+			ToolbarHelper::divider();
 		}
-		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
+		ToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 }
 ?>

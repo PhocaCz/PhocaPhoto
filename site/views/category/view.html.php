@@ -7,11 +7,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 jimport( 'joomla.application.component.view');
 jimport( 'joomla.itemsystem.folder' );
 jimport( 'joomla.itemsystem.file' );
 
-class PhocaPhotoViewCategory extends JViewLegacy
+class PhocaPhotoViewCategory extends HtmlView
 {
 	protected $category;
 	protected $subcategories;
@@ -21,14 +28,14 @@ class PhocaPhotoViewCategory extends JViewLegacy
 	function display($tpl = null) {
 
 
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_phocagallery');
 
-		$app					= JFactory::getApplication();
+		$app					= Factory::getApplication();
 		$this->t['p'] 			= $app->getParams();
-		$uri 					= \Joomla\CMS\Uri\Uri::getInstance();
+		$uri 					= Uri::getInstance();
 		$model					= $this->getModel();
-		$document				= JFactory::getDocument();
+		$document				= Factory::getDocument();
 		$this->t['categoryid']	= $app->input->get( 'id', 0, 'int' );
 		$limitStart				= $app->input->get( 'limitstart', 0, 'int' );
 
@@ -37,7 +44,7 @@ class PhocaPhotoViewCategory extends JViewLegacy
 		$this->items			= $model->getItemList($this->t['categoryid']);
 		$this->t['pagination']	= $model->getPagination($this->t['categoryid']);
 
-		$this->t['photopathrel']	= JURI::base().'phocaphoto/';
+		$this->t['photopathrel']	= Uri::base().'phocaphoto/';
 		$this->t['photopathabs']	= JPATH_ROOT .'/phocaphoto/';
 		$this->t['action']		= $uri->toString();
 
@@ -84,31 +91,31 @@ class PhocaPhotoViewCategory extends JViewLegacy
 		phocagalleryimport('phocagallery.file.filethumbnail');
 		phocagalleryimport('phocagallery.render.renderdetailwindow');
 
-		$paramsC						= JComponentHelper::getParams('com_phocagallery');
+		$paramsC						= ComponentHelper::getParams('com_phocagallery');
 		$this->t['large_image_width']	= (int)$paramsC->get( 'large_image_width', 640 );
 		$this->t['large_image_height']	= (int)$paramsC->get( 'large_image_height', 480 );
 
 
-		JHTML::stylesheet('media/com_phocaphoto/css/style.css' );
-		if ($this->t['load_bootstrap'] == 1) {
-			JHtml::_('jquery.framework');
-			JHTML::stylesheet('media/com_phocaphoto/bootstrap/css/bootstrap.min.css' );
-			$document->addScript(JURI::root(true).'/media/com_phocaphoto/bootstrap/js/bootstrap.min.js');
-		}
-		JHtml::_('jquery.framework', false);
-		if ($this->t['equal_height'] == 1) {
+		HTMLHelper::stylesheet('media/com_phocaphoto/css/style.css' );
+		/*if ($this->t['load_bootstrap'] == 1) {
+			HTMLHelper::_('jquery.framework');
+			HTMLHelper::stylesheet('media/com_phocaphoto/bootstrap/css/bootstrap.min.css' );
+			$document->addScript(Uri::root(true).'/media/com_phocaphoto/bootstrap/js/bootstrap.min.js');
+		}*/
+		HTMLHelper::_('jquery.framework', false);
+	/*	if ($this->t['equal_height'] == 1) {
 
-			$document->addScript(JURI::root(true).'/media/com_phocaphoto/js/jquery.equalheights.min.js');
+			$document->addScript(Uri::root(true).'/media/com_phocaphoto/js/jquery.equalheights.min.js');
 
 			$document->addScriptDeclaration(
 			'jQuery(document).ready(function(){
 				jQuery(\'.ph-thumbnail\').equalHeights();
 			});');
-		}
+		}*/
 
 		if ($this->t['image_link'] == 2) {
-			JHTML::stylesheet('media/com_phocaphoto/js/prettyphoto/css/prettyPhoto.css');
-			$document->addScript(JURI::root(true) . '/media/com_phocaphoto/js/prettyphoto/js/jquery.prettyPhoto.js');
+			HTMLHelper::stylesheet('media/com_phocaphoto/js/prettyphoto/css/prettyPhoto.css');
+			$document->addScript(Uri::root(true) . '/media/com_phocaphoto/js/prettyphoto/js/jquery.prettyPhoto.js');
 
 			$js = "\n" . 'jQuery(document).ready(function(){
 				jQuery("a[rel^=\'prettyPhoto\']").prettyPhoto({' . "\n";
@@ -122,9 +129,9 @@ class PhocaPhotoViewCategory extends JViewLegacy
 		} else if ($this->t['image_link'] == 1) {
 
 
-			$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/photoswipe/css/photoswipe.css');
-			$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/photoswipe/css/default-skin/default-skin.css');
-			$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/photoswipe/css/photoswipe-style.css');
+			$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe.css');
+			$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/default-skin/default-skin.css');
+			$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe-style.css');
 
 		}
 
@@ -142,7 +149,7 @@ class PhocaPhotoViewCategory extends JViewLegacy
 
 	protected function _prepareDocument($category) {
 
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$menus		= $app->getMenu();
 		$pathway 	= $app->getPathway();
 		//$this->t['p']		= &$app->getParams();
@@ -156,7 +163,7 @@ class PhocaPhotoViewCategory extends JViewLegacy
 		if ($menu) {
 			$this->t['p']->def('page_heading', $this->t['p']->get('page_title', $menu->title));
 		} else {
-			$this->t['p']->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->t['p']->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 		}
 
 		/*
@@ -169,7 +176,7 @@ class PhocaPhotoViewCategory extends JViewLegacy
 		if (empty($title) || (isset($title) && $title == '')) {
 			$title = htmlspecialchars_decode($app->get('sitename'));
 		} else if ($app->get('sitename_pagetitles', 0)) {
-			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
+			$title = Text::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 		}
 		//$this->document->setTitle($title);
 
@@ -192,10 +199,10 @@ class PhocaPhotoViewCategory extends JViewLegacy
           }
           // else add the title before or after the sitename
           elseif ($app->get('sitename_pagetitles', 0) == 1) {
-             $title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+             $title = Text::sprintf('JPAGETITLE', $app->get('sitename'), $title);
           }
           elseif ($app->get('sitename_pagetitles', 0) == 2) {
-             $title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+             $title = Text::sprintf('JPAGETITLE', $title, $app->get('sitename'));
           }
           $this->document->setTitle($title);
 
@@ -226,7 +233,7 @@ class PhocaPhotoViewCategory extends JViewLegacy
 			if ($this->category[0]->parentid == 0) {
 				// $pathway->addItem( JText::_('COM_PHOCAPHOTO_CATEGORIES'), JRoute::_(PhocaPhotoRoute::getCategoriesRoute()));
 			} else if ($this->category[0]->parentid > 0) {
-				$pathway->addItem($this->category[0]->parenttitle, JRoute::_(PhocaPhotoRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
+				$pathway->addItem($this->category[0]->parenttitle, Route::_(PhocaPhotoRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
 			}
 		}
 
@@ -242,7 +249,7 @@ class PhocaPhotoViewCategory extends JViewLegacy
 			} else if ($this->category[0]->parentid > 0) {
 				$curpath = $pathway->getPathwayNames();
 				if($this->category[0]->parenttitle != $curpath[count($curpath)-1]){
-				 	$pathway->addItem($this->category[0]->parenttitle, JRoute::_(PhocaPhotoRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
+				 	$pathway->addItem($this->category[0]->parenttitle, Route::_(PhocaPhotoRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
 				}
 			}
 		}

@@ -7,9 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Route;
 jimport('joomla.application.component.controllerform');
 
-class PhocaPhotoCpControllerPhocaPhotoItem extends JControllerForm
+class PhocaPhotoCpControllerPhocaPhotoItem extends FormController
 {
 	protected	$option 		= 'com_phocaphoto';
 
@@ -18,7 +23,7 @@ class PhocaPhotoCpControllerPhocaPhotoItem extends JControllerForm
 	}
 
 	protected function allowAdd($data = array()) {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.create', 'com_phocaphoto');
 		if ($allow === null) {
@@ -29,7 +34,7 @@ class PhocaPhotoCpControllerPhocaPhotoItem extends JControllerForm
 	}
 
 	protected function allowEdit($data = array(), $key = 'id') {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.edit', 'com_phocaphoto');
 		if ($allow === null) {
@@ -40,9 +45,9 @@ class PhocaPhotoCpControllerPhocaPhotoItem extends JControllerForm
 	}
 
 	public function batch($model) {
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$model	= $this->getModel('phocaphotoitem', '', array());
-		$this->setRedirect(JRoute::_('index.php?option=com_phocaphoto&view=phocaphotoitems'.$this->getRedirectToListAppend(), false));
+		$this->setRedirect(Route::_('index.php?option=com_phocaphoto&view=phocaphotoitems'.$this->getRedirectToListAppend(), false));
 		return parent::batch($model);
 	}
 }

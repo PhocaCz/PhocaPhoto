@@ -14,10 +14,77 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.helper');
 
 class PhocaPhotoRoute
 {
+	public static function getImageRoute($id, $catid = 0, $idAlias = '', $catidAlias = '', $type = 'image', $suffix = '')
+	{
+
+		$app 		= Factory::getApplication();
+		$menu 		= $app->getMenu();
+		$active 	= $menu->getActive();
+		$option		= $app->input->get( 'option', '', 'string' );
+
+		$activeId 	= 0;
+		$notCheckId	= 0;
+		if (isset($active->id)){
+			$activeId    = $active->id;
+		}
+
+		if ((int)$activeId > 0 && $option == 'com_phocaphoto') {
+
+			$needles = array(
+				'image'  => (int) $id,
+				'category' => (int) $catid,
+				'categories' => (int)$activeId
+			);
+			$notCheckId	= 1;
+		} else {
+			$needles = array(
+				'image'  => (int) $id,
+				'category' => (int) $catid,
+				'categories' => ''
+			);
+			$notCheckId	= 0;
+		}
+
+
+		if ($idAlias != '') {
+			$id = $id . ':' . $idAlias;
+		}
+		if ($catidAlias != '') {
+			$catid = $catid . ':' . $catidAlias;
+		}
+
+		//Create the link
+
+		switch ($type)
+		{
+			case 'image':
+				$link = 'index.php?option=com_phocaphoto&view=image&catid='. $catid .'&id='. $id;
+				break;
+
+			default:
+				$link = '';
+			break;
+		}
+
+		if ($item = PhocaPhotoRoute::_findItem($needles, $notCheckId)) {
+			if (isset($item->id) && ((int)$item->id > 0)) {
+				$link .= '&Itemid='.$item->id;
+			}
+		}
+
+		if ($suffix != '') {
+			$link .= '&'.$suffix;
+		}
+
+		return $link;
+	}
+
+	/*
 	public static function getImageRoute($id, $catid = 0, $idAlias = '', $catidAlias = '')
 	{
 		$needles = array(
@@ -25,15 +92,15 @@ class PhocaPhotoRoute
 			'category' => (int) $catid,
 			'categories' => ''
 		);
-		
-		
+
+
 		if ($idAlias != '') {
 			$id = $id . ':' . $idAlias;
 		}
 		if ($catidAlias != '') {
 			$catid = $catid . ':' . $catidAlias;
 		}
-		
+
 		$link = 'index.php?option=com_phocaphoto&view=image&id='. $id;
 
 
@@ -45,8 +112,8 @@ class PhocaPhotoRoute
 
 		return $link;
 	}
-	
-	
+	*/
+
 	public static function getCategoryRoute($catid, $catidAlias = '')
 	{
 		$needles = array(
@@ -54,7 +121,7 @@ class PhocaPhotoRoute
 			//'section'  => (int) $sectionid,
 			'categories' => ''
 		);
-		
+
 		if ($catidAlias != '') {
 			$catid = $catid . ':' . $catidAlias;
 		}
@@ -73,14 +140,14 @@ class PhocaPhotoRoute
 
 		return $link;
 	}
-	
-	
+
+
 	public static function getCategoriesRoute()
 	{
 		$needles = array(
 			'categories' => ''
 		);
-		
+
 		//Create the link
 		$link = 'index.php?option=com_phocaphoto&view=categories';
 
@@ -95,12 +162,12 @@ class PhocaPhotoRoute
 
 		return $link;
 	}
-	
-	
 
-	protected static function _findItem($needles, $notCheckId = 0)
+
+
+	/*protected static function _findItem($needles, $notCheckId = 0)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$menus	= $app->getMenu('site', array());
 		$items	= $menus->getItems('component', 'com_phocaphoto');
 
@@ -108,13 +175,13 @@ class PhocaPhotoRoute
 			return $app->input->get('Itemid', 0, '', 'int');
 			//return null;
 		}
-		
+
 		$match = null;
-		
+
 
 		foreach($needles as $needle => $id)
 		{
-			
+
 			if ($notCheckId == 0) {
 				foreach($items as $item) {
 					if ((@$item->query['view'] == $needle) && (@$item->query['id'] == $id)) {
@@ -124,6 +191,59 @@ class PhocaPhotoRoute
 				}
 			} else {
 				foreach($items as $item) {
+					if (@$item->query['view'] == $needle) {
+						$match = $item;
+						break;
+					}
+				}
+			}
+
+			if(isset($match)) {
+				break;
+			}
+		}
+
+		return $match;
+	}*/
+
+	protected static function _findItem($needles, $notCheckId = 0) {
+		//$component =& JComponentHelper::getComponent('com_phocagallery');
+
+
+		// Don't check ID for specific views
+		$notCheckIdArray =  array('categories');
+
+		$app	= Factory::getApplication();
+		$menus	= $app->getMenu('site', array());
+		$items	= $menus->getItems('component', 'com_phocaphoto');
+
+
+
+		if(!$items) {
+			return Factory::getApplication()->input->get('Itemid', 0, '', 'int');
+			//return null;
+		}
+
+		$match = null;
+
+		foreach($needles as $needle => $id) {
+
+			if ($notCheckId == 0) {
+				foreach($items as $item) {
+
+					// The view must match
+					// In case the view does not have any ID like categories view
+					// there is no need to compare to ID
+					if ((@$item->query['view'] == $needle) && (in_array($needle, $notCheckIdArray) || @$item->query['id'] == $id)) {
+
+
+						$match = $item;
+						break;
+					}
+				}
+			} else {
+				foreach($items as $item) {
+
 					if (@$item->query['view'] == $needle) {
 						$match = $item;
 						break;

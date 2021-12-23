@@ -7,9 +7,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 jimport('joomla.application.component.model');
 
-class PhocaPhotoModelCategory extends JModelLegacy
+class PhocaPhotoModelCategory extends BaseDatabaseModel
 {
 	var $_document 			= null;
 	var $_category 			= null;
@@ -22,14 +25,14 @@ class PhocaPhotoModelCategory extends JModelLegacy
 
 	function __construct() {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		parent::__construct();
 
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 
-		$paramsC 			= JComponentHelper::getParams('com_phocaphoto') ;
+		$paramsC 			= ComponentHelper::getParams('com_phocaphoto') ;
 		$defaultPagination	= $paramsC->get( 'default_pagination', '20' );
 
 		// Get the pagination request variables
@@ -90,7 +93,7 @@ class PhocaPhotoModelCategory extends JModelLegacy
 	function _getItemListQuery( $categoryId) {
 
 		$wheres		= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params 	= $app->getParams();
 
 		if ((int)$categoryId > 0) {
@@ -119,7 +122,7 @@ class PhocaPhotoModelCategory extends JModelLegacy
 	function _getCategoriesQuery( $categoryId, $subcategories = FALSE ) {
 
 		$wheres		= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params 	= $app->getParams();
 
 		// Get the current category or get parent categories of the current category
@@ -157,7 +160,7 @@ class PhocaPhotoModelCategory extends JModelLegacy
 
 	function _getItemOrdering() {
 		if (empty($this->_item_ordering)) {
-			$app						= JFactory::getApplication();
+			$app						= Factory::getApplication();
 			$params						= $app->getParams();
 			$ordering					= $params->get( 'image_ordering', 1 );
 			$this->_item_ordering 		= PhocaPhotoOrdering::getOrderingText($ordering);
@@ -169,7 +172,7 @@ class PhocaPhotoModelCategory extends JModelLegacy
 	function _getSubcategoryOrdering() {
 		if (empty($this->_category_ordering)) {
 
-			$app						= JFactory::getApplication();
+			$app						= Factory::getApplication();
 			$params						= $app->getParams();
 			$ordering					= $params->get( 'subcategory_ordering', 1 );
 			$this->_category_ordering 	= PhocaPhotoOrdering::getOrderingText($ordering);

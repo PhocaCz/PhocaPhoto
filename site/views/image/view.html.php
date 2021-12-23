@@ -7,11 +7,17 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 jimport( 'joomla.application.component.view');
 jimport( 'joomla.itemsystem.folder' );
 jimport( 'joomla.itemsystem.file' );
 
-class PhocaPhotoViewImage extends JViewLegacy
+class PhocaPhotoViewImage extends HtmlView
 {
 	protected $item;
 	protected $itemnext;
@@ -21,14 +27,14 @@ class PhocaPhotoViewImage extends JViewLegacy
 
 	function display($tpl = null){
 
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_phocagallery');
 
-		$app					= JFactory::getApplication();
+		$app					= Factory::getApplication();
 		$this->t['p'] 			= $app->getParams();
-		$uri 					= \Joomla\CMS\Uri\Uri::getInstance();
+		$uri 					= Uri::getInstance();
 		$model					= $this->getModel();
-		$document				= JFactory::getDocument();
+		$document				= Factory::getDocument();
 		$itemId					= $app->input->get('id', 0, 'int');
 
 		$this->category			= $model->getCategory($itemId);
@@ -66,14 +72,14 @@ class PhocaPhotoViewImage extends JViewLegacy
 			}
 		}
 
-		JHTML::stylesheet('media/com_phocaphoto/css/style.css' );
+		HTMLHelper::stylesheet('media/com_phocaphoto/css/style.css' );
 
-		JHtml::_('jquery.framework', false);
-		if ($this->t['load_bootstrap'] == 1) {
-			JHtml::_('jquery.framework');
-			JHTML::stylesheet('media/com_phocaphoto/bootstrap/css/bootstrap.min.css' );
-			$document->addScript(JURI::root(true).'/media/com_phocaphoto/bootstrap/js/bootstrap.min.js');
-		}
+		HTMLHelper::_('jquery.framework', false);
+		/*if ($this->t['load_bootstrap'] == 1) {
+			HTMLHelper::_('jquery.framework');
+			HTMLHelper::stylesheet('media/com_phocaphoto/bootstrap/css/bootstrap.min.css' );
+			$document->addScript(Uri::root(true).'/media/com_phocaphoto/bootstrap/js/bootstrap.min.js');
+		}*/
 
 		if (isset($this->category[0]) && is_object($this->category[0]) && isset($this->item[0]) && is_object($this->item[0])){
 			$this->_prepareDocument($this->category[0], $this->item[0]);
@@ -86,7 +92,7 @@ class PhocaPhotoViewImage extends JViewLegacy
 
 	protected function _prepareDocument($category, $item) {
 
-		$app			= JFactory::getApplication();
+		$app			= Factory::getApplication();
 		$menus			= $app->getMenu();
 		$menu 			= $menus->getActive();
 		$pathway 		= $app->getPathway();
@@ -98,7 +104,7 @@ class PhocaPhotoViewImage extends JViewLegacy
 		if ($menu) {
 			$this->t['p']->def('page_heading', $this->t['p']->get('page_title', $menu->title));
 		} else {
-			$this->t['p']->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->t['p']->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 		}
 
 		/*$title = $this->t['p']->get('page_title', '');
@@ -108,7 +114,7 @@ class PhocaPhotoViewImage extends JViewLegacy
 		if (empty($title) || (isset($title) && $title == '')) {
 			$title = htmlspecialchars_decode($app->get('sitename'));
 		} else if ($app->get('sitename_pagetitles', 0)) {
-			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
+			$title = Text::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 		}
 		//$this->document->setTitle($title);
 
@@ -126,10 +132,10 @@ class PhocaPhotoViewImage extends JViewLegacy
           }
           // else add the title before or after the sitename
           elseif ($app->get('sitename_pagetitles', 0) == 1) {
-             $title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+             $title = Text::sprintf('JPAGETITLE', $app->get('sitename'), $title);
           }
           elseif ($app->get('sitename_pagetitles', 0) == 2) {
-             $title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+             $title = Text::sprintf('JPAGETITLE', $title, $app->get('sitename'));
           }
           $this->document->setTitle($title);
 
@@ -158,7 +164,7 @@ class PhocaPhotoViewImage extends JViewLegacy
 		$pathway 		= $app->getPathway();
 		if (isset($category->id)) {
 			if ($category->id > 0) {
-				$pathway->addItem($category->title, JRoute::_(PhocaPhotoRoute::getCategoryRoute($category->id, $category->alias)));
+				$pathway->addItem($category->title, Route::_(PhocaPhotoRoute::getCategoryRoute($category->id, $category->alias)));
 			}
 		}
 

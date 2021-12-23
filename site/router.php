@@ -1,186 +1,309 @@
 <?php
-/* @package Joomla
- * @copyright Copyright (C) Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * @extension Phoca Extension
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+/**
+ * @package     Joomla.Site
+ * @subpackage  com_phocaphoto
+ *
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die();
+
+defined('_JEXEC') or die;
+use Joomla\CMS\Component\Router\RouterView;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Component\Router\RouterViewConfiguration;
+use Joomla\CMS\Component\Router\Rules\MenuRules;
+use Joomla\CMS\Component\Router\Rules\StandardRules;
+use Joomla\CMS\Component\Router\Rules\NomenuRules;
+use Joomla\CMS\Factory;
+
+if (!class_exists('PhocaGalleryLoader')) {
+    require_once( JPATH_ADMINISTRATOR.'/components/com_phocagallery/libraries/loader.php');
+}
+phocagalleryimport('phocagallery.path.routerrules');
+phocagalleryimport('phocagallery.category.category');
 
 /**
- * Method to build Route
- * @param array $query
- */ 
+ * Routing class of com_phocaphoto
+ *
+ * @since  3.3
+ */
+
+
+class PhocaphotoRouter extends RouterView
+{
+	protected $noIDs = false;
+
+	/**
+	 * Content Component router constructor
+	 *
+	 * @param   JApplicationCms  $app   The application object
+	 * @param   JMenu            $menu  The menu object to work with
+	 */
+	public function __construct($app = null, $menu = null)
+	{
+
+
+		$params = ComponentHelper::getParams('com_phocaphoto');
+		$this->noIDs = (bool) $params->get('sef_ids');
+
+		$categories = new RouterViewConfiguration('categories');
+		$categories->setKey('id');
+		$this->registerView($categories);
+
+
+		$category = new RouterViewConfiguration('category');
+
+
+		$category->setKey('id')->setParent($categories, 'parent_id')->setNestable();
+
+
+		$this->registerView($category);
+
+
+
+		$image = new RouterViewConfiguration('image');
+		$image->setKey('id')->setParent($category, 'catid');//->setNestable();
+		$this->registerView($image);
+
+
+
+
+		parent::__construct($app, $menu);
+
+
+		$this->attachRule(new MenuRules($this));
+
+
+		$this->attachRule(new StandardRules($this));
+		$this->attachRule(new NomenuRules($this));
+
+
+
+	}
+
+	/**
+	 * Method to get the segment(s) for a category
+	 *
+	 * @param   string  $id     ID of the category to retrieve the segments for
+	 * @param   array   $query  The request that is built right now
+	 *
+	 * @return  array|string  The segments of this item
+	 */
+	public function getCategorySegment($id, $query)
+	{
+
+
+
+	    $category = PhocaGalleryCategory::getCategoryById($id);
+
+
+		if (isset($category->id)) {
+
+
+
+
+
+		    $path = PhocaGalleryCategory::getPath(array(), (int)$category->id, $category->parent_id, $category->title, $category->alias);
+
+		    //$path = array_reverse($path, true);
+		    //$path = array_reverse($category->getPath(), true);
+			$path[0] = '1:root';// we don't use root but it is needed when building urls with joomla methods
+			if ($this->noIDs)
+			{
+				foreach ($path as &$segment)
+				{
+					list($id, $segment) = explode(':', $segment, 2);
+				}
+			}
+
+			return $path;
+		}
+
+		return array();
+	}
+
+	/**
+	 * Method to get the segment(s) for a category
+	 *
+	 * @param   string  $id     ID of the category to retrieve the segments for
+	 * @param   array   $query  The request that is built right now
+	 *
+	 * @return  array|string  The segments of this item
+	 */
+	public function getCategoriesSegment($id, $query)
+	{
+
+		return $this->getCategorySegment($id, $query);
+	}
+
+	/**
+	 * Method to get the segment(s) for an article
+	 *
+	 * @param   string  $id     ID of the article to retrieve the segments for
+	 * @param   array   $query  The request that is built right now
+	 *
+	 * @return  array|string  The segments of this item
+	 */
+	public function getImageSegment($id, $query)
+	{
+
+		if (!strpos($id, ':'))
+		{
+			$db = Factory::getDbo();
+			$dbquery = $db->getQuery(true);
+			$dbquery->select($dbquery->qn('alias'))
+				->from($dbquery->qn('#__phocagallery'))
+				->where('id = ' . $dbquery->q($id));
+			$db->setQuery($dbquery);
+
+			$id .= ':' . $db->loadResult();
+		}
+
+		if ($this->noIDs)
+		{
+			list($void, $segment) = explode(':', $id, 2);
+
+			return array($void => $segment);
+		}
+
+
+		return array((int) $id => $id);
+	}
+
+
+
+
+
+	/**
+	 * Method to get the segment(s) for a form
+	 *
+	 * @param   string  $id     ID of the article form to retrieve the segments for
+	 * @param   array   $query  The request that is built right now
+	 *
+	 * @return  array|string  The segments of this item
+	 *
+	 * @since   3.7.3
+	 */
+	public function getFormSegment($id, $query)
+	{
+
+		return $this->getArticleSegment($id, $query);
+	}
+
+	/**
+	 * Method to get the id for a category
+	 *
+	 * @param   string  $segment  Segment to retrieve the ID for
+	 * @param   array   $query    The request that is parsed right now
+	 *
+	 * @return  mixed   The id of this item or false
+	 */
+	public function getCategoryId($segment, $query)
+	{
+
+
+
+	    if (isset($query['id']))
+		{
+
+		    $category = false;
+		    if ((int)$query['id'] > 0) {
+                $category = PhocaGalleryCategory::getCategoryById($query['id']);
+            } else if ((int)$segment > 0) {
+
+		        $category = PhocaGalleryCategory::getCategoryById((int)$segment);
+                if (isset($category->id) && (int)$category->id > 0 && $category->parent_id == 0) {
+                    // We don't have root category with 0 so we need to start with segment one
+                    return (int)$category->id;
+                }
+            }
+
+
+
+
+			if ($category) {
+                if (!empty($category->subcategories)){
+
+                    foreach ($category->subcategories as $child) {
+                        if ($this->noIDs) {
+                            if ($child->alias == $segment) {
+                                return $child->id;
+                            }
+                        } else {
+                            // We need to check full alias because ID can be same for Category and Item
+                            $fullAlias = (int)$child->id . '-'.$child->alias;
+                            if ($fullAlias == $segment) {
+                                return $child->id;
+                            }
+                        }
+                    }
+                }
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Method to get the segment(s) for a category
+	 *
+	 * @param   string  $segment  Segment to retrieve the ID for
+	 * @param   array   $query    The request that is parsed right now
+	 *
+	 * @return  mixed   The id of this item or false
+	 */
+	public function getCategoriesId($segment, $query)
+	{
+
+		return $this->getCategoryId($segment, $query);
+	}
+
+	/**
+	 * Method to get the segment(s) for an article
+	 *
+	 * @param   string  $segment  Segment of the article to retrieve the ID for
+	 * @param   array   $query    The request that is parsed right now
+	 *
+	 * @return  mixed   The id of this item or false
+	 */
+	public function getImageId($segment, $query)
+	{
+
+		if ($this->noIDs)
+		{
+			$db = Factory::getDbo();
+			$dbquery = $db->getQuery(true);
+			$dbquery->select($dbquery->qn('id'))
+				->from($dbquery->qn('#__phocagallery_image'))
+				->where('alias = ' . $dbquery->q($segment))
+				->where('catid = ' . $dbquery->q($query['id']));
+			$db->setQuery($dbquery);
+
+			return (int) $db->loadResult();
+		}
+
+		return (int) $segment;
+	}
+}
+
+
 function PhocaPhotoBuildRoute(&$query)
 {
-	
-	static $items;
-	$segments	= array();
-	$itemid		= null;
-	
 
-	// Break up the weblink/category id into numeric and alias values.
-	if (isset($query['id']) && strpos($query['id'], ':')) {
-		list($query['id'], $query['alias']) = explode(':', $query['id'], 2);
-	}
+	$app = Factory::getApplication();
+	$router = new PhocadownloadRouter($app, $app->getMenu());
 
-	// Break up the category id into numeric and alias values.
-/*	if (isset($query['catid']) && strpos($query['catid'], ':')) {
-		list($query['catid'], $query['catalias']) = explode(':', $query['catid'], 2);
-	}*/
-
-	// Get the menu items for this component.
-	if (!$items) {
-
-		$app		= JFactory::getApplication();
-		$menu		= $app->getMenu();
-		$items		= $menu->getItems('component', 'com_phocaphoto');
-	
-	}
-
-	// Search for an appropriate menu item.
-	if (is_array($items))
-	{
-		// If only the option and itemid are specified in the query, return that item.
-		if (!isset($query['view']) && !isset($query['id']) && !isset($query['catid']) && !isset($query['download']) && isset($query['Itemid'])) {
-			$itemid = (int) $query['Itemid'];
-		}
-
-	
-		// ------------------------------------------------------
-		// Search for a specific link based on the critera given.
-		if (!$itemid)
-		{
-			foreach ($items as $item)
-			{
-				// Check if this menu item links to this view.
-				if (isset($item->query['view']) && $item->query['view'] == 'category'
-					
-					&& isset($query['view']) && $query['view'] != 'image'
-					
-					&& isset($item->query['id']) && isset($query['id']) && $item->query['id'] == $query['id']) {
-						$itemid	= $item->id;
-				}
-				
-				else if (isset($item->query['view']) && $item->query['view'] == 'image'
-					&& isset($query['view']) && $query['view'] != 'category'
-					
-					
-					&& isset($item->query['id']) && isset($query['id']) && $item->query['id'] == $query['id']) {
-						$itemid	= $item->id;
-				}
-			}
-			
-		}
-	}
-
-	// Check if the router found an appropriate itemid.
-	if (!$itemid) {
-		// Check if a category was specified
-		if (isset($query['id'])) { // Check if a id was specified.
-			if (isset($query['alias'])) {
-				$query['id'] .= ':'.$query['alias'];
-			}
-
-			// Push the id onto the stack.
-			//$segments[] = $query['id'];
-			if(isset($query['view'])) {$segments[]	= $query['view'];}
-			$segments[] = $query['id'];
-			unset($query['view']);
-			unset($query['id']);
-			unset($query['alias']);
-			unset($query['catid']);
-			unset($query['catalias']);
-			
-		} else {
-			// Categories view.
-			unset($query['view']);
-		}
-	} else {
-		$query['Itemid'] = $itemid;
-		// Remove the unnecessary URL segments.
-		unset($query['view']);
-		unset($query['id']);
-		unset($query['alias']);
-	}
-	
-	return $segments;
+	return $router->build($query);
 }
 
-/**
- * Method to parse Route
- * @param array $segments
- */ 
+
 function PhocaPhotoParseRoute($segments)
 {
-	$vars = array();
-
-	//Get the active menu item
-	$app		= JFactory::getApplication();
-	$menu		= $app->getMenu();
-	$item 		= $menu->getActive();
 
 
-	// Count route segments
-	$count = count($segments);
+	$app = Factory::getApplication();
+	$router = new PhocadownloadRouter($app, $app->getMenu());
 
-	//Standard routing
-	if(!isset($item))  {
-		if($count == 3 ) {
-			$vars['view']  = $segments[$count - 3];
-		} else if ($count == 2) {
-			$vars['view']  = $segments[$count - 2];
-		} else {
-			$vars['view'] = 'category';
-		}
-		$vars['id']    = $segments[$count - 1];
-		
-	} else {
-		//Handle View and Identifier
-
-		switch($item->query['view'])
-		{
-			case 'categories' :
-				if($count == 1) {
-					$vars['view'] 	= 'categories';
-					$vars['id'] 	= $segments[$count-1];
-				}
-
-				if($count == 2) {
-					$vars['view'] 	= $segments[$count-2];
-					$vars['id'] 	= $segments[$count-1];
-				}				
-			break;
-			
-		
-			
-			case 'category'   :
-				if($count == 1) {
-					$vars['view'] 	= 'category';
-				}
-
-				if($count == 2) {
-					$vars['view'] 	= $segments[$count-2];
-					$vars['id'] 	= $segments[$count-1];
-				}
-			break;
-			
-			case 'image'   :
-				if($count == 1) {
-					$vars['view'] 	= 'image';
-				}
-
-				if($count == 2) {
-					$vars['view'] 	= $segments[$count-2];
-					$vars['id'] 	= $segments[$count-1];
-				}
-				
-			break;
-		}
-	}
-	
-	unset($segments[0]);
-	return $vars;
+	return $router->parse($segments);
 }
-?>
+

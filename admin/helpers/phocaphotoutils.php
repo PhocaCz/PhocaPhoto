@@ -7,6 +7,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Installer\Installer;
 jimport('joomla.application.component.model');
 
 class PhocaPhotoUtils
@@ -17,9 +21,9 @@ class PhocaPhotoUtils
 	}
 
 	public static function getAliasName($alias) {
-		$alias = \JApplicationHelper::stringURLSafe($alias);
+		$alias =JUri::stringURLSafe($alias);
 		if (trim(str_replace('-', '', $alias)) == '') {
-			$alias = JFactory::getDate()->format("Y-m-d-H-i-s");
+			$alias = Factory::getDate()->format("Y-m-d-H-i-s");
 		}
 		return $alias;
 	}
@@ -27,7 +31,7 @@ class PhocaPhotoUtils
 	public static function setVars( $task = '') {
 
 		$a			= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$a['o'] 	= htmlspecialchars(strip_tags($app->input->get('option')));
 		$a['c'] 	= str_replace('com_', '', $a['o']);
 		$a['n'] 	= 'Phoca' . ucfirst(str_replace('com_phoca', '', $a['o']));
@@ -41,12 +45,12 @@ class PhocaPhotoUtils
 
 	public static function getExtensionVersion($c = 'phocaphoto') {
 		$folder = JPATH_ADMINISTRATOR . '/components/com_'.$c;
-		if (JFolder::exists($folder)) {
-			$xmlFilesInDir = JFolder::files($folder, '.xml$');
+		if (Folder::exists($folder)) {
+			$xmlFilesInDir = Folder::files($folder, '.xml$');
 		} else {
 			$folder = JPATH_SITE . '/components/com_'.$c;
-			if (JFolder::exists($folder)) {
-				$xmlFilesInDir = JFolder::files($folder, '.xml$');
+			if (Folder::exists($folder)) {
+				$xmlFilesInDir = Folder::files($folder, '.xml$');
 			} else {
 				$xmlFilesInDir = null;
 			}
@@ -57,7 +61,7 @@ class PhocaPhotoUtils
 		{
 			foreach ($xmlFilesInDir as $xmlfile)
 			{
-				if ($data = \JInstaller::parseXMLInstallFile($folder.'/'.$xmlfile)) {
+				if ($data = Installer::parseXMLInstallFile($folder.'/'.$xmlfile)) {
 					foreach($data as $key => $value) {
 						$xml_items[$key] = $value;
 					}

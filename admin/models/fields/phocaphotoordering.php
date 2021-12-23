@@ -7,10 +7,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('JPATH_BASE') or die;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldPhocaPhotoOrdering extends JFormField
+class JFormFieldPhocaPhotoOrdering extends FormField
 {
 
 	protected $type = 'PhocaPhotoOrdering';
@@ -69,12 +71,12 @@ class JFormFieldPhocaPhotoOrdering extends JFormField
 
 		// Create a read-only list (no name) with a hidden input to store the value.
 		if ((string) $this->element['readonly'] == 'true') {
-			$html[] = JHtml::_('list.ordering', '', $query, trim($attr), $this->value, $id ? 0 : 1);
+			$html[] = HTMLHelper::_('list.ordering', '', $query, trim($attr), $this->value, $id ? 0 : 1);
 			$html[] = '<input type="hidden" name="'.$this->name.'" value="'.$this->value.'"/>';
 		}
 		// Create a regular list.
 		else {
-			$html[] = JHtml::_('list.ordering', $this->name, $query, trim($attr), $this->value, $id ? 0 : 1);
+			$html[] = HTMLHelper::_('list.ordering', $this->name, $query, trim($attr), $this->value, $id ? 0 : 1);
 		}
 
 		return implode($html);

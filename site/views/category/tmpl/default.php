@@ -7,7 +7,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
-echo '<div id="ph-pp-category-box" class="pp-category-view'.$this->t['p']->get( 'pageclass_sfx' ).'">';
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filesystem\File;
+echo '<div id="ph-ph-category-box" class="ph-category-view'.$this->t['p']->get( 'pageclass_sfx' ).'">';
 
 
 // Heading
@@ -35,10 +39,10 @@ if ($this->t['p']->get( 'show_page_heading' ) != '') {
 
 if (isset($this->category[0]->parentid) && ($this->t['display_back'] == 1 || $this->t['display_back'] == 3)) {
 	if ($this->category[0]->parentid == 0) {
-		$linkUp = JRoute::_(PhocaPhotoRoute::getCategoriesRoute());
-		$linkUpText = JText::_('COM_PHOCAPHOTO_CATEGORIES');
+		$linkUp = Route::_(PhocaPhotoRoute::getCategoriesRoute());
+		$linkUpText = Text::_('COM_PHOCAPHOTO_CATEGORIES');
 	} else if ($this->category[0]->parentid > 0) {
-		$linkUp = JRoute::_(PhocaPhotoRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias));
+		$linkUp = Route::_(PhocaPhotoRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias));
 		$linkUpText = $this->category[0]->parenttitle;
 	} else {
 		$linkUp 	= false;
@@ -47,7 +51,7 @@ if (isset($this->category[0]->parentid) && ($this->t['display_back'] == 1 || $th
 
 	if ($linkUp && $linkUpText) {
 		echo '<div class="ph-top">'
-		.'<a class="btn btn-success" title="'.$linkUpText.'" href="'. $linkUp.'" ><span class="glyphicon glyphicon-arrow-left"></span> '.JText::_($linkUpText).'</a></div>';
+		.'<a class="btn btn-success" title="'.$linkUpText.'" href="'. $linkUp.'" ><span class="glyphicon glyphicon-arrow-left fas fa-arrow-left"></span> '.Text::_($linkUpText).'</a></div>';
 	}
 }
 
@@ -57,14 +61,14 @@ if ( isset($this->category[0]->description) && $this->category[0]->description !
 
 
 if (!empty($this->subcategories) && (int)$this->t['display_subcat_cat_view'] > 0) {
-	echo '<div class="ph-subcategories">'.JText::_('COM_PHOCAPHOTO_SUBCATEGORIES') . ':</div>';
+	echo '<div class="ph-subcategories">'.Text::_('COM_PHOCAPHOTO_SUBCATEGORIES') . ':</div>';
 	echo '<ul>';
 	$j = 0;
 	foreach($this->subcategories as $v) {
 		if ($j == (int)$this->t['display_subcat_cat_view']) {
 			break;
 		}
-		echo '<li><a href="'.JRoute::_(PhocaPhotoRoute::getCategoryRoute($v->id, $v->alias)).'">'.$v->title.'</a></li>';
+		echo '<li><a href="'.Route::_(PhocaPhotoRoute::getCategoryRoute($v->id, $v->alias)).'">'.$v->title.'</a></li>';
 		$j++;
 	}
 	echo '</ul>';
@@ -102,20 +106,17 @@ if (!empty($this->items)) {
 
 		//if ($i%3==0) { echo '<div class="row">';}
 
-		echo '<div class="col-sm-6 col-md-'.$nw.'">';
-		echo '<div class="thumbnail ph-thumbnail">';
-
-		$link = JRoute::_(PhocaPhotoRoute::getImageRoute($v->id, $v->catid, $v->alias, $v->categoryalias));
+		$link = Route::_(PhocaPhotoRoute::getImageRoute($v->id, $v->catid, $v->alias, $v->categoryalias));
 		$imagePath = '';
 		$imageLink = '';
 		if (isset($v->filename) && ($v->filename != '' && $v->filename != '-')) {
 			$image 	= PhocaPhotoHelper::getThumbnailName($this->t['path'], $v->filename, 'medium');
 			if (isset($image->rel) && $image->rel != '') {
-				$imagePath = JURI::base(true).'/'.$image->rel;
+				$imagePath = Uri::base(true).'/'.$image->rel;
 			}
 			$imageL = PhocaPhotoHelper::getThumbnailName($this->t['path'], $v->filename, 'large');
 			if (isset($imageL->rel) && $imageL->rel != '') {
-				$imageLink = JURI::base(true).'/'.$imageL->rel;
+				$imageLink = Uri::base(true).'/'.$imageL->rel;
 			}
 
 		} else if (isset($v->extm) && $v->extm != '' && isset($v->extl) && $v->extl != '') {
@@ -123,19 +124,23 @@ if (!empty($this->items)) {
 			$imageLink = $v->extl;
 		}
 
+		echo '<div class="col-sm-6 col-md-'.$nw.'">';
+		echo '<div class="card ph-card">';
+
+
 		if ($this->t['image_link'] == 2) {
-			echo '<a href="'.$imageLink.'" rel="prettyPhoto[pp_gal1]">';
+			echo '<a class="ph-image-box" href="'.$imageLink.'" rel="prettyPhoto[pp_gal1]">';
 		} if ($this->t['image_link'] == 1) {
 
             echo '<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
-            echo '<a class="photoswipe-button" href="'.$imageLink.'" itemprop="contentUrl" data-size="'.$w.'x'.$h.'" >';
+            echo '<a class="pg-photoswipe-button ph-image-box" href="'.$imageLink.'" itemprop="contentUrl" data-size="'.$w.'x'.$h.'" >';
         } else {
 
-			echo '<a href="'.$link.'">';
+			echo '<a lass="ph-image-box" href="'.$link.'">';
 		}
 
 		if (isset($imagePath) && $imagePath != '') {
-			echo '<img src="'.$imagePath.'" alt="" class="img-responsive ph-image"';
+			echo '<img src="'.$imagePath.'" alt="'.htmlspecialchars($v->title).'" class="card-img-top img-responsive ph-image"';
 			if (isset($this->t['image_width']) && $this->t['image_width'] != '' && isset($this->t['image_height']) && $this->t['image_height'] != '') {
 				echo ' style="width:'.$this->t['image_width'].';height:'.$this->t['image_height'].'"';
 			}
@@ -154,21 +159,23 @@ if (!empty($this->items)) {
 		/*$imageAbs = $this->t['photopathabs'] . htmlspecialchars($v->folder).'/thumb.jpg';
 		$imageRel = $this->t['photopathrel'] . htmlspecialchars($v->folder).'/thumb.jpg';
 		if (isset($v->image) && $v->image != '') {
-			echo '<img src="'. JURI::base(true) . '/' . $v->image.'" alt="" style="width:'.$this->t['image_width'].'px;height:'.$this->t['image_height'].'px" >';
-		} else if (JFile::exists($imageAbs)) {
+			echo '<img src="'. Uri::base(true) . '/' . $v->image.'" alt="" style="width:'.$this->t['image_width'].'px;height:'.$this->t['image_height'].'px" >';
+		} else if (File::exists($imageAbs)) {
 			echo '<img src="'.$imageRel.'" alt="" style="width:'.$this->t['image_width'].'px;height:'.$this->t['image_height'].'px" >';
 		}*/
-		echo '<div class="caption">';
+		echo '<div class="card-body">';
+
 		if ($this->t['display_title_category_view'] == 1 && $v->title != '') {
-			echo '<h3>' . $v->title . '</h3>';
+			echo '<h5 class="card-title">'.$v->title.'</h5>';
 		}
 
 		// Description box will be displayed even no description is set - to set height and have all columns same height
-		echo '<div class="ph-item-desc">';
+		echo '<div class="card-text">';
+
 		if ($this->t['display_desc_category_view'] == 1 && $v->description != '') {
 			echo $v->description;
 		}
-		echo '</div>';
+
 
 
 		// External Links
@@ -193,7 +200,7 @@ if (!empty($this->items)) {
 				}
 				if (!isset($extlink1[3]) || $extlink1[3] == 1) {
 
-					$extlink1[4] = '<span class="glyphicon glyphicon glyphicon-share"></span>';
+					$extlink1[4] = '<span class="glyphicon glyphicon glyphicon-share fas fa-share"></span>';
 					$extlink1[5] = '';
 				} else {
 					$extlink1[4] = $extlink1[1];
@@ -232,7 +239,7 @@ if (!empty($this->items)) {
 				}
 				if (!isset($extlink2[3]) || $extlink2[3] == 1) {
 
-					$extlink2[4] = '<span class="glyphicon glyphicon glyphicon-share"></span>';
+					$extlink2[4] = '<span class="glyphicon glyphicon glyphicon-share fas fa-share"></span>';
 					$extlink2[5] = '';
 				} else {
 					$extlink2[4] = $extlink2[1];
@@ -260,6 +267,7 @@ if (!empty($this->items)) {
 		}
 
 
+		echo '</div>'; // end card text
 
 		// E.g. Photoswipe cannot run two instances at once, so it is better to hide the button for photo swipe
 		if ($this->t['display_view_photo_button'] == 1) {
@@ -268,7 +276,7 @@ if (!empty($this->items)) {
 			if ($this->t['view_photo_class_icon']	!= '') {
 				$viewPhoto = '<span class="'.$this->t['view_photo_class_icon'].'"></span>';
 			} else {
-				$viewPhoto = JText::_('COM_PHOCAPHOTO_VIEW_PHOTO');
+				$viewPhoto = Text::_('COM_PHOCAPHOTO_VIEW_PHOTO');
 			}
 
 			if ($this->t['view_photo_class'] != '') {
@@ -284,7 +292,7 @@ if (!empty($this->items)) {
 			} else if ($imageLink != '' && $this->t['image_link'] == 1) {
 
 				/*echo '<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
-				echo '<a href="'.$imageLink.'" itemprop="contentUrl" class="btn btn-primary photoswipe-button" role="button" data-size="'.$w.'x'.$h.'" >'.JText::_('COM_PHOCAPHOTO_VIEW_PHOTO').'</a>';
+				echo '<a href="'.$imageLink.'" itemprop="contentUrl" class="btn btn-primary photoswipe-button" role="button" data-size="'.$w.'x'.$h.'" >'.Text::_('COM_PHOCAPHOTO_VIEW_PHOTO').'</a>';
 				echo '</figure>';*/
 				// Photoswipe cannot have too instances, so the second link goes to detail view
 				echo '<a href="' . $link . '" class="'.$class.'" role="button">'.$viewPhoto.'</a>';
@@ -294,16 +302,16 @@ if (!empty($this->items)) {
 			echo '</p>';
 		}
 
-		echo '<div class="clearfix"></div>';
-		echo '</div>';
+		//echo '<div class="clearfix"></div>';
+		echo '</div>'; // end card body
 
-		echo '</div>';
-		echo '</div>'. "\n";
+		echo '</div>';// end card
+		echo '</div>'. "\n"; // end cols
 
 		//$i++; if ($i%3==0 || $c==$i) { echo '</div>';}
 
 	}
-	echo '</div></div></div>'. "\n";
+	echo '</div></div></div>'. "\n"; // end row items container
 
 
 	echo $this->loadTemplate('pagination');

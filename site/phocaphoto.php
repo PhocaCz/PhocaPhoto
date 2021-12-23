@@ -7,6 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 require_once( JPATH_COMPONENT.'/controller.php' );
 jimport( 'joomla.filesystem.folder' );
@@ -21,7 +22,7 @@ require_once( JPATH_ADMINISTRATOR.'/components/com_phocaphoto/helpers/pagination
 
 // Require specific controller if requested
 
-if($controller = JFactory::getApplication()->input->get( 'controller')) {
+if($controller = Factory::getApplication()->input->get( 'controller')) {
     $path = JPATH_COMPONENT.'/controllers/'.$controller.'.php';
     if (file_exists($path)) {
         require_once $path;
@@ -30,12 +31,12 @@ if($controller = JFactory::getApplication()->input->get( 'controller')) {
     }
 }
 // Create the controller
-$app	= JFactory::getApplication();
+$app	= Factory::getApplication();
 $classname    = 'PhocaPhotoController'.ucfirst($controller);
 $controller   = new $classname( );
 
 // Perform the Request task
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$controller->execute(Factory::getApplication()->input->get('task'));
 
 // Redirect if set by the controller
 $controller->redirect();
