@@ -20,7 +20,13 @@ echo '<div class="ph-left-cp">';
 echo '<div class="ph-cp-item-box">';
 $link	= 'index.php?option='.$this->t['o'].'&view=';
 foreach ($this->views as $k => $v) {
-	$linkV	= $link . $this->t['c'] . $k;
+
+	if ($k == 'phocagallery') {
+		$linkV	= 'index.php?option=com_phocagallery';
+	} else {
+		$linkV	= $link . $this->t['c'] . $k;
+	}
+
 	echo $r->quickIconButton( $linkV, Text::_($v[0]), $v[1], $v[2]);
 }
 echo '</div>';
