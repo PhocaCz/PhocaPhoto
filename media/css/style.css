@@ -15,8 +15,23 @@
 
 .ph-card {
 	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-	margin-bottom: 1em;
 	border: 0;
+	height: 100%;
+}
+
+.ph-card .card-body {
+	flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ph-categories-view .ph-card {
+	padding-top: 1em;
+}
+
+.ph-category-view .ph-items .row > div,
+.ph-categories-view .ph-categories .row > div {
+	margin-bottom: 1em;
 }
 
 .ph-category-view,
@@ -88,4 +103,14 @@
 .ph-item-view h3,
 .ph-card .card-title:first-letter{
     text-transform: capitalize;
+}
+
+
+.ph-card-img-top {
+    border-top-left-radius: calc(0.25rem - 1px);
+    border-top-right-radius: calc(0.25rem - 1px);
+}
+
+.ph-card-img-full {
+    border-radius: calc(0.25rem - 1px);
 }
