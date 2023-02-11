@@ -15,6 +15,8 @@ use Joomla\CMS\Component\Router\Rules\MenuRules;
 use Joomla\CMS\Component\Router\Rules\StandardRules;
 use Joomla\CMS\Component\Router\Rules\NomenuRules;
 use Joomla\CMS\Factory;
+use Joomla\Database\ParameterType;
+
 
 if (!class_exists('PhocaGalleryLoader')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocagallery/libraries/loader.php');
@@ -44,7 +46,7 @@ class PhocaphotoRouter extends RouterView
 
 
 		$params = ComponentHelper::getParams('com_phocaphoto');
-		$this->noIDs = (bool) $params->get('sef_ids');
+		$this->noIDs = (bool) $params->get('remove_sef_ids');
 
 		$categories = new RouterViewConfiguration('categories');
 		$categories->setKey('id');
@@ -170,9 +172,26 @@ class PhocaphotoRouter extends RouterView
 		return array((int) $id => $id);
 	}
 
+	public function getInfoSegment($id, $query) {
 
+		if (!strpos($id, ':')) {
+			$db = Factory::getDbo();
+			$dbquery = $db->getQuery(true);
+			$dbquery->select($dbquery->qn('alias'))
+				->from($dbquery->qn('#__phocagallery'))
+				->where('id = ' . $dbquery->q($id));
+			$db->setQuery($dbquery);
 
+			$id .= ':' . $db->loadResult();
+		}
 
+		if ($this->noIDs) {
+			list($void, $segment) = explode(':', $id, 2);
+			return array($void => $segment);
+		}
+
+		return array((int) $id => $id);
+	}
 
 	/**
 	 * Method to get the segment(s) for a form
@@ -201,12 +220,30 @@ class PhocaphotoRouter extends RouterView
 	public function getCategoryId($segment, $query)
 	{
 
+        if (!isset($query['id']) && isset($query['view']) && $query['view'] == 'categories') {
+            $query['id'] = 0;
+        }
 
+	    if ($this->noIDs)  {
+	        $db = Factory::getDbo();
+			$dbquery = $db->getQuery(true);
+			$dbquery->select($db->quoteName('id'))
+				->from($db->quoteName('#__phocagallery_categories'))
+				->where(
+					[
+						$db->quoteName('alias') . ' = :alias',
+						$db->quoteName('parent_id') . ' = :parent_id',
+					]
+				)
+				->bind(':alias', $segment)
+				->bind(':parent_id', $query['id'], ParameterType::INTEGER);
+			$db->setQuery($dbquery);
 
-	    if (isset($query['id']))
-		{
+			return (int) $db->loadResult();
+		}
 
 		    $category = false;
+	    if (isset($query['id'])) {
 		    if ((int)$query['id'] > 0) {
                 $category = PhocaGalleryCategory::getCategoryById($query['id']);
             } else if ((int)$segment > 0) {
@@ -239,7 +276,19 @@ class PhocaphotoRouter extends RouterView
                     }
                 }
 			}
-		}
+		} else {
+            // --- under test
+            // We don't have query ID because of e.g. language
+            // Should not happen because of modifications in build function here: administrator/components/com_phocacart/libraries/phocacart/path/routerrules.php
+            /*if ((int)$segment > 0) {
+		        $category = PhocaCartCategory::getCategoryById((int)$segment);
+                if (isset($category->id) && (int)$category->id > 0 && $category->parent_id == 0) {
+                    // We don't have root category with 0 so we need to start with segment one
+                    return (int)$category->id;
+                }
+            }*/
+            // under test
+        }
 
 		return false;
 	}
@@ -274,7 +323,7 @@ class PhocaphotoRouter extends RouterView
 			$db = Factory::getDbo();
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($dbquery->qn('id'))
-				->from($dbquery->qn('#__phocagallery_image'))
+				->from($dbquery->qn('#__phocagallery'))
 				->where('alias = ' . $dbquery->q($segment))
 				->where('catid = ' . $dbquery->q($query['id']));
 			$db->setQuery($dbquery);
@@ -284,6 +333,14 @@ class PhocaphotoRouter extends RouterView
 
 		return (int) $segment;
 	}
+
+    public function parse(&$segments){
+		return parent::parse($segments);
+	}
+
+    public function build(&$query) {
+		return parent::build($query);
+	}
 }
 
 
@@ -291,7 +348,7 @@ function PhocaPhotoBuildRoute(&$query)
 {
 
 	$app = Factory::getApplication();
-	$router = new PhocadownloadRouter($app, $app->getMenu());
+	$router = new PhocaPhotoRouter($app, $app->getMenu());
 
 	return $router->build($query);
 }
@@ -302,7 +359,7 @@ function PhocaPhotoParseRoute($segments)
 
 
 	$app = Factory::getApplication();
-	$router = new PhocadownloadRouter($app, $app->getMenu());
+	$router = new PhocaPhotoRouter($app, $app->getMenu());
 
 	return $router->parse($segments);
 }

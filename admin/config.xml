@@ -175,9 +175,16 @@ rows="2" cols="26" default="" />
 <field name="pagination" default="5,10,15,20,50" size="18" type="text" label="COM_PHOCAPHOTO_FIELD_CATEGORY_VIEW_PAGINATION_LABEL" description="COM_PHOCAPHOTO_FIELD_CATEGORY_VIEW_PAGINATION_DESC" />
 
 <field name="enable_cache" type="list" default="0" label="COM_PHOCAPHOTO_FIELD_ENABLE_CACHE_LABEL" description="COM_PHOCAPHOTO_FIELD_ENABLE_CACHE_DESC">
-	<option value="1">COM_PHOCAPHOTO_YES</option>
 	<option value="0">COM_PHOCAPHOTO_NO</option>
+	<option value="1">COM_PHOCAPHOTO_YES</option>
+
 </field>
+
+	<field name="remove_sef_ids" type="radio" layout="joomla.form.field.radio.switcher" default="0" label="COM_PHOCAPHOTO_SEF_NOIDS_LABEL" description="COM_PHOCAPHOTO_SEF_NOIDS_DESC"  filter="integer" >
+		<option value="0">COM_PHOCAPHOTO_NO</option>
+		<option value="1">COM_PHOCAPHOTO_YES</option>
+
+		</field>
 
 <!--
 <field name="load_bootstrap" default="0" type="radio" layout="joomla.form.field.radio.switcher" label="COM_PHOCAPHOTO_FIELD_LOAD_BOOTSTRAP_LABEL" description="COM_PHOCAPHOTO_FIELD_LOAD_BOOTSTRAP_DESC" >

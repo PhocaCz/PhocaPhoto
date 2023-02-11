@@ -32,7 +32,7 @@ if($controller = Factory::getApplication()->input->get( 'controller')) {
 }
 // Create the controller
 $app	= Factory::getApplication();
-$classname    = 'PhocaPhotoController'.ucfirst($controller);
+$classname    = 'PhocaPhotoController'.ucfirst((string)$controller);
 $controller   = new $classname( );
 
 // Perform the Request task
