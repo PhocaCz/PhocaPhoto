@@ -1,3 +1,4 @@
+<?xml version="1.0" ?>
 <updates>
 	<update>
 		<name><![CDATA[ Phoca Photo ]]></name>
@@ -34,7 +35,27 @@
 		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
 		<maintainerurl>https://www.phoca.cz/</maintainerurl>
 		<section>Updates</section>
-		<targetplatform name="joomla" version="4.[012]"/>
+		<targetplatform name="joomla" version="4\.*"/>
+		<client>administrator</client>
+	</update>
+	<update>
+		<name><![CDATA[ Phoca Photo ]]></name>
+		<description><![CDATA[ Phoca Photo is Joomla! CMS component - it displays images on Joomla! site. It includes categories view (list of categories), category view (list of images) and image (detail) view. Phoca Photo is lightweight version of Phoca Gallery. It doesn't include any administration (images and categories are managed by Phoca Gallery administration). It includes only lightweight frontend views which load the content fast and simply on the website. ]]></description>
+		<element>com_phocaphoto</element>
+		<type>component</type>
+		<version>5.0.0</version>
+		<infourl title="Phoca Photo 5.0.0">http://www.phoca.cz/version/index.php?phocaphoto=5.0.0</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaPhoto/releases/download/5.0.0/com_phocaphoto_v5.0.0.zip</downloadurl>
+		</downloads>
+		<sha512>58180abdc49804b25b4dc38f5637df00a5680637939e29028254f1163bb19b3905c42dadf20f1c9ffab77a16ecfdc3feb53be13315612766b1955d192410bbc1</sha512>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
+		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<section>Updates</section>
+		<targetplatform name="joomla" version="(4|5)\.*"/>
 		<client>administrator</client>
 	</update>
 </updates>

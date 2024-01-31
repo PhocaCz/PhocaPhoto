@@ -69,7 +69,7 @@ class JFormFieldPhocaPhotoCategory extends FormField
 
 		//} else {
 
-			//array_unshift($tree, JHtml::_('select.option', '', '- '.JText::_('COM_PHOCAPHOTO_SELECT_CATEGORY').' -', 'value', 'text'));
+			//array_unshift($tree, HtmlHelper::_('select.option', '', '- '.Text::_('COM_PHOCAPHOTO_SELECT_CATEGORY').' -', 'value', 'text'));
 		//}
 		//return JHtml::_('select.genericlist',  $tree,  $this->name, 'class="form-control"', 'value', 'text', $this->value, $this->id );
 

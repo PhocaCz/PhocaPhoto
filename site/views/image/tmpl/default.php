@@ -169,7 +169,7 @@ if (!empty($v)) {
 		if(isset($this->itemprev[0]) && $this->itemprev[0]) {
 			$p = $this->itemprev[0];
 			$linkPrev = Route::_(PhocaPhotoRoute::getImageRoute($p->id, $p->catid, $p->alias, $p->categoryalias));
-			echo '<div class="pull-left"><a href="'.$linkPrev.'" class="btn btn-default ph-image-navigation" role="button"><span class="glyphicon glyphicon-arrow-left fas fa-arrow-left"></span> '.Text::_('COM_PHOCAPHOTO_PREVIOUS').'</a></div>';
+			echo '<div class="pull-left"><a href="'.$linkPrev.'" class="btn btn-primary ph-image-navigation" role="button"><span class="glyphicon glyphicon-arrow-left fas fa-arrow-left"></span> '.Text::_('COM_PHOCAPHOTO_PREVIOUS').'</a></div>';
 		}
 		echo '</div>';
 
@@ -185,7 +185,7 @@ if (!empty($v)) {
 		if(isset($this->itemnext[0]) && $this->itemnext[0]) {
 			$n = $this->itemnext[0];
 			$linkNext = Route::_(PhocaPhotoRoute::getImageRoute($n->id, $n->catid, $n->alias, $n->categoryalias));
-			echo '<div class="pull-right"><a href="'.$linkNext.'" class="btn btn-default ph-image-navigation" role="button">'.Text::_('COM_PHOCAPHOTO_NEXT').' <span class="glyphicon glyphicon-arrow-right fas fa-arrow-right"></span></a></div>';
+			echo '<div class="pull-right"><a href="'.$linkNext.'" class="btn btn-primary ph-image-navigation" role="button">'.Text::_('COM_PHOCAPHOTO_NEXT').' <span class="glyphicon glyphicon-arrow-right fas fa-arrow-right"></span></a></div>';
 		}
 		echo '</div></div>';
 	} else {

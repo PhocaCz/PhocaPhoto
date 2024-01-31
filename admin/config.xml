@@ -5,7 +5,7 @@
 
 <fieldset name="categories" label="COM_PHOCAPHOTO_CONFIG_HEAD_CATEGORIES_VIEW_LABEL">
 
-<field name="description" default="" type="editor" label="COM_PHOCAPHOTO_FIELD_DESCRIPTION_LABEL" description="COM_PHOCAPHOTO_FIELD_DESCRIPTION_DESC" filter="JComponentHelper::filterText" />
+<field name="description" default="" type="editor" label="COM_PHOCAPHOTO_FIELD_DESCRIPTION_LABEL" description="COM_PHOCAPHOTO_FIELD_DESCRIPTION_DESC" filter="\Joomla\CMS\Component\ComponentHelper::filterText" />
 
 <field name="display_subcat_cats_view" default="0"  type="text" label="COM_PHOCAPHOTO_FIELD_DISPLAY_SUBCAT_CATS_VIEW_LABEL" description="COM_PHOCAPHOTO_FIELD_DISPLAY_SUBCAT_CATS_VIEW_DESC" />
 

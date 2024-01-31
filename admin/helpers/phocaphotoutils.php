@@ -11,6 +11,8 @@ use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\Installer;
+use Joomla\CMS\Uri\Uri;
+
 jimport('joomla.application.component.model');
 
 class PhocaPhotoUtils
@@ -21,7 +23,7 @@ class PhocaPhotoUtils
 	}
 
 	public static function getAliasName($alias) {
-		$alias =JUri::stringURLSafe($alias);
+		$alias =Uri::stringURLSafe($alias);
 		if (trim(str_replace('-', '', $alias)) == '') {
 			$alias = Factory::getDate()->format("Y-m-d-H-i-s");
 		}
