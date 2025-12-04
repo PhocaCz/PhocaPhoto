@@ -9,9 +9,9 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Filesystem\Folder;
 
 jimport('joomla.application.component.model');
 
@@ -34,7 +34,7 @@ class PhocaPhotoUtils
 
 		$a			= array();
 		$app		= Factory::getApplication();
-		$a['o'] 	= htmlspecialchars(strip_tags($app->input->get('option')));
+		$a['o'] 	= htmlspecialchars(strip_tags($app->getInput()->get('option')));
 		$a['c'] 	= str_replace('com_', '', $a['o']);
 		$a['n'] 	= 'Phoca' . ucfirst(str_replace('com_phoca', '', $a['o']));
 		$a['l'] 	= strtoupper($a['o']);
@@ -47,11 +47,11 @@ class PhocaPhotoUtils
 
 	public static function getExtensionVersion($c = 'phocaphoto') {
 		$folder = JPATH_ADMINISTRATOR . '/components/com_'.$c;
-		if (Folder::exists($folder)) {
+		if (file_exists($folder)) {
 			$xmlFilesInDir = Folder::files($folder, '.xml$');
 		} else {
 			$folder = JPATH_SITE . '/components/com_'.$c;
-			if (Folder::exists($folder)) {
+			if (is_dir($folder)) {
 				$xmlFilesInDir = Folder::files($folder, '.xml$');
 			} else {
 				$xmlFilesInDir = null;

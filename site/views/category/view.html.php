@@ -36,8 +36,8 @@ class PhocaPhotoViewCategory extends HtmlView
 		$uri 					= Uri::getInstance();
 		$model					= $this->getModel();
 		$document				= Factory::getDocument();
-		$this->t['categoryid']	= $app->input->get( 'id', 0, 'int' );
-		$limitStart				= $app->input->get( 'limitstart', 0, 'int' );
+		$this->t['categoryid']	= $app->getInput()->get( 'id', 0, 'int' );
+		$limitStart				= $app->getInput()->get( 'limitstart', 0, 'int' );
 
 		$this->category			= $model->getCategory($this->t['categoryid']);
 		$this->subcategories	= $model->getSubcategories($this->t['categoryid']);
@@ -96,7 +96,9 @@ class PhocaPhotoViewCategory extends HtmlView
 		$this->t['large_image_height']	= (int)$paramsC->get( 'large_image_height', 480 );
 
 
-		HTMLHelper::stylesheet('media/com_phocaphoto/css/style.css' );
+		//HTMLHelper::stylesheet('media/com_phocaphoto/css/style.css' );
+		$wa 				= $app->getDocument()->getWebAssetManager();
+		$wa->registerAndUseStyle('com_phocaphoto', 'media/com_phocaphoto/css/style.css', array('version' => 'auto'));
 		/*if ($this->t['load_bootstrap'] == 1) {
 			HTMLHelper::_('jquery.framework');
 			HTMLHelper::stylesheet('media/com_phocaphoto/bootstrap/css/bootstrap.min.css' );
@@ -114,8 +116,11 @@ class PhocaPhotoViewCategory extends HtmlView
 		}*/
 
 		if ($this->t['image_link'] == 2) {
-			HTMLHelper::stylesheet('media/com_phocaphoto/js/prettyphoto/css/prettyPhoto.css');
-			$document->addScript(Uri::root(true) . '/media/com_phocaphoto/js/prettyphoto/js/jquery.prettyPhoto.js');
+			//HTMLHelper::stylesheet('media/com_phocaphoto/js/prettyphoto/css/prettyPhoto.css');
+			//$document->addScript(Uri::root(true) . '/media/com_phocaphoto/js/prettyphoto/js/jquery.prettyPhoto.js');
+
+			$wa->registerAndUseStyle('com_phocaphoto.prettyphoto', 'media/com_phocaphoto/js/prettyphoto/css/prettyPhoto.css', array('version' => 'auto'));
+			$wa->registerAndUseScript('com_phocaphoto.prettyphoto.js', 'media/com_phocaphoto/js/prettyphoto/js/jquery.prettyPhoto.js', ['version' => 'auto']);
 
 			$js = "\n" . 'jQuery(document).ready(function(){
 				jQuery("a[rel^=\'prettyPhoto\']").prettyPhoto({' . "\n";
@@ -129,9 +134,9 @@ class PhocaPhotoViewCategory extends HtmlView
 		} else if ($this->t['image_link'] == 1) {
 
 
-			$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe.css');
-			$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/default-skin/default-skin.css');
-			$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe-style.css');
+			$wa->registerAndUseStyle('com_phocagallery.photoswipe', 'media/com_phocagallery/js/photoswipe/css/photoswipe.css', array('version' => 'auto'));
+			$wa->registerAndUseStyle('com_phocagallery.photoswipe.skin', 'media/com_phocagallery/js/photoswipe/css/default-skin/default-skin.css', array('version' => 'auto'));
+			$wa->registerAndUseStyle('com_phocagallery.photoswipe.style', 'media/com_phocagallery/js/photoswipe/css/photoswipe-style.css', array('version' => 'auto'));
 
 		}
 

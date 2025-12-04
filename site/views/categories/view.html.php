@@ -42,7 +42,9 @@ class PhocaPhotoViewCategories extends HtmlView
 		$this->t['display_subcat_cats_view']= $this->t['p']->get( 'display_subcat_cats_view', 0 );
 
 
-		HTMLHelper::stylesheet('media/com_phocaphoto/css/style.css' );
+		//HTMLHelper::stylesheet('media/com_phocaphoto/css/style.css' );
+		$wa 				= $app->getDocument()->getWebAssetManager();
+		$wa->registerAndUseStyle('com_phocaphoto', 'media/com_phocaphoto/css/style.css', array('version' => 'auto'));
 	/*	if ($this->t['load_bootstrap'] == 1) {
 			HTMLHelper::_('jquery.framework');
 			HTMLHelper::stylesheet('media/com_phocaphoto/bootstrap/css/bootstrap.min.css' );

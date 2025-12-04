@@ -25,7 +25,7 @@ class PhocaPhotoRoute
 		$app 		= Factory::getApplication();
 		$menu 		= $app->getMenu();
 		$active 	= $menu->getActive();
-		$option		= $app->input->get( 'option', '', 'string' );
+		$option		= $app->getInput()->get( 'option', '', 'string' );
 
 		$activeId 	= 0;
 		$notCheckId	= 0;
@@ -172,7 +172,7 @@ class PhocaPhotoRoute
 		$items	= $menus->getItems('component', 'com_phocaphoto');
 
 		if(!$items) {
-			return $app->input->get('Itemid', 0, '', 'int');
+			return $app->getInput()->get('Itemid', 0, '', 'int');
 			//return null;
 		}
 
@@ -220,7 +220,7 @@ class PhocaPhotoRoute
 
 
 		if(!$items) {
-			return Factory::getApplication()->input->get('Itemid', 0, '', 'int');
+			return Factory::getApplication()->getInput()->get('Itemid', 0, '', 'int');
 			//return null;
 		}
 

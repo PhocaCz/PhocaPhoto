@@ -7,6 +7,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('JPATH_BASE') or die;
+
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -17,21 +19,25 @@ class JFormFieldPhocaHead extends FormField
 {
 	protected $type = 'PhocaHead';
 	protected function getLabel() { return '';}
-	
+
 	protected function getInput() {
-	
+
 		$tc = 'phocaphoto';
 		$ts = 'media/com_'.$tc.'/css/administrator/';
 		$ti = 'media/com_'.$tc.'/images/administrator/';
-		HTMLHelper::stylesheet( $ts.'/'.$tc.'options.css' );
+
+        // HTMLHelper::stylesheet( $ts.'/'.$tc.'options.css' );
+        $app = Factory::getApplication();
+        $wa  = $app->getDocument()->getWebAssetManager();
+        $wa->registerAndUseStyle('com_phocaphoto.options', $ts.'/'.$tc.'options.css', array('version' => 'auto'));
 		echo '<div style="clear:both;"></div>';
 		$phocaImage	= ( (string)$this->element['phocaimage'] ? $this->element['phocaimage'] : '' );
 		$image 		= '';
-		
+
 		if ($phocaImage != ''){
 			$image 	= HTMLHelper::_('image', $ti . $phocaImage, '' );
 		}
-		
+
 		if ($this->element['default']) {
 			if ($image != '') {
 				return '<div class="ph-options-head">'

@@ -156,6 +156,12 @@ a.upItemLink::before {
 .phTemplateItem a::before {
     content: none;
 }
+.g5i .g5-phoca a::before {
+   content: none;
+}
+.alert.alert-info a.g5-button {
+   color: #fff;
+}
 ');
 
 $upEL = 'https://extensions.joomla.org/extension/phoca-photo/';

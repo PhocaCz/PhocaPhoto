@@ -42,7 +42,7 @@ class JFormFieldPhocaPhotoCategory extends FormField
 		$data = $db->loadObjectList();
 
 		// TO DO - check for other views than category edit
-		$view 	= $app->input->get( 'view' );
+		$view 	= $app->getInput()->get( 'view' );
 		$catId	= -1;
 		if ($view == 'phocaphotocat') {
 			$id 	= $this->form->getValue('id'); // id of current category

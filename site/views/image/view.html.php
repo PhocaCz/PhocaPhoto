@@ -35,7 +35,7 @@ class PhocaPhotoViewImage extends HtmlView
 		$uri 					= Uri::getInstance();
 		$model					= $this->getModel();
 		$document				= Factory::getDocument();
-		$itemId					= $app->input->get('id', 0, 'int');
+		$itemId					= $app->getInput()->get('id', 0, 'int');
 
 		$this->category			= $model->getCategory($itemId);
 		$this->item				= $model->getItem($itemId);
@@ -72,7 +72,9 @@ class PhocaPhotoViewImage extends HtmlView
 			}
 		}
 
-		HTMLHelper::stylesheet('media/com_phocaphoto/css/style.css' );
+		//HTMLHelper::stylesheet('media/com_phocaphoto/css/style.css' );
+		$wa 				= $app->getDocument()->getWebAssetManager();
+		$wa->registerAndUseStyle('com_phocaphoto', 'media/com_phocaphoto/css/style.css', array('version' => 'auto'));
 
 		HTMLHelper::_('jquery.framework', false);
 		/*if ($this->t['load_bootstrap'] == 1) {

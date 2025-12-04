@@ -5,6 +5,7 @@
 	"license": "GNU/GPL",
 	"projectName": "PhocaPhoto",
 	"extensionName": "Phoca Photo",
+	"nameSpace": "Phoca\\Component\\Phocaphoto",
 	"projectInitials" : "PH",				  
 	"description": "Phoca Photo is Joomla! CMS component - it displays images on Joomla! site. It includes categories view (list of categories), category view (list of images) and image (detail) view. Phoca Photo is lightweight version of Phoca Gallery. It doesn't include any administration (images and categories are managed by Phoca Gallery administration). It includes only lightweight frontend views which load the content fast and simply on the website.",
 	"projectUrl": "https://www.phoca.cz/phocaphoto",

@@ -37,7 +37,7 @@ class PhocaPhotoModelCategory extends BaseDatabaseModel
 
 		// Get the pagination request variables
 		$this->setState('limit', $app->getUserStateFromRequest('com_phocaphoto.limit', 'limit', $defaultPagination, 'int'));
-		$this->setState('limitstart', $app->input->get('limitstart', 0, 'int'));
+		$this->setState('limitstart', $app->getInput()->get('limitstart', 0, 'int'));
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
@@ -45,8 +45,8 @@ class PhocaPhotoModelCategory extends BaseDatabaseModel
 		$this->setState('filter.language',$app->getLanguageFilter());
 
 		// Get the filter request variables
-		$this->setState('filter_order', $app->input->get('filter_order', 'ordering'));
-		$this->setState('filter_order_dir', $app->input->get('filter_order_Dir', 'ASC'));
+		$this->setState('filter_order', $app->getInput()->get('filter_order', 'ordering'));
+		$this->setState('filter_order_dir', $app->getInput()->get('filter_order_Dir', 'ASC'));
 
 	}
 

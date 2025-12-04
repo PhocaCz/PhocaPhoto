@@ -7,10 +7,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
-use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Filesystem\Path;
+
 jimport('joomla.application.component.model');
 
 class PhocaPhotoHelper
